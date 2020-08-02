@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_2">
+
+    <ImageView
+        android:id="@+id/chest_1_iv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/chest_2_iv"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:srcCompat="@drawable/toolbox_empty"
+        app:layout_constraintBottom_toTopOf="@id/tv_chest_1"/>
+
+    <ImageView
+        android:id="@+id/chest_2_iv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintLeft_toRightOf="@id/chest_1_iv"
+        app:layout_constraintRight_toLeftOf="@id/chest_3_iv"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:srcCompat="@drawable/toolbox_empty"
+        app:layout_constraintBottom_toTopOf="@id/tv_chest_2"/>
+
+    <ImageView
+        android:id="@+id/chest_3_iv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintRight_toLeftOf="@+id/guideline1"
+        app:layout_constraintLeft_toRightOf="@id/chest_2_iv"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:srcCompat="@drawable/toolbox_empty"
+        app:layout_constraintBottom_toTopOf="@id/tv_chest_3"/>
+
+    <TextView
+        android:id="@+id/tv_chest_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/chest_1_iv"
+        app:layout_constraintRight_toRightOf="@id/chest_1_iv"
+        app:layout_constraintTop_toBottomOf="@id/chest_1_iv"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/tv_chest_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/chest_2_iv"
+        app:layout_constraintRight_toRightOf="@id/chest_2_iv"
+        app:layout_constraintTop_toBottomOf="@id/chest_2_iv"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/tv_chest_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        app:layout_constraintLeft_toLeftOf="@id/chest_3_iv"
+        app:layout_constraintRight_toRightOf="@id/chest_3_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chest_3_iv"
+        android:textSize="20dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="497dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="143dp" />
+
+    <Button
+        android:id="@+id/btn_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintRight_toLeftOf="@id/btn_setting"/>
+
+    <Button
+        android:id="@+id/btn_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintLeft_toRightOf="@id/btn_play"
+        app:layout_constraintRight_toLeftOf="@id/btn_statistics"/>
+
+    <Button
+        android:id="@+id/btn_statistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Statistics"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintLeft_toRightOf="@id/btn_setting"
+        app:layout_constraintRight_toLeftOf="@id/guideline1"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/btn_play"
+        app:layout_constraintRight_toRightOf="@id/btn_statistics"
+        app:layout_constraintTop_toBottomOf="@id/btn_setting"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        android:progress="100" />
+
+    <com.example.pmu_projekat.views.CustomView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toRightOf="@id/guideline1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </com.example.pmu_projekat.views.CustomView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
