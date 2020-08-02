@@ -30,4 +30,34 @@ public class WarehouseChassis {
 
     @ColumnInfo(name = "is_active")
     public boolean isActive;
+
+    public WarehouseChassis(long idUser, long idChassis, boolean isActive) {
+        this.idUser = idUser;
+        this.idChassis = idChassis;
+        this.isActive = isActive;
+    }
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
+
+    public long getIdChassis() {
+        return idChassis;
+    }
+
+    public void setIdChassis(long idChassis) {
+        this.idChassis = idChassis;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }

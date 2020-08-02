@@ -16,7 +16,7 @@ public class ChestUtility {
 
     public boolean isReady()
     {
-        return time == 0;
+        return time <= 0;
     }
 
     public long getDatabaseID() {

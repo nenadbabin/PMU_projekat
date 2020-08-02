@@ -30,4 +30,34 @@ public class WarehouseWeapon {
 
     @ColumnInfo(name = "is_active")
     public boolean isActive;
+
+    public WarehouseWeapon(long idUser, long idWeapon, boolean isActive) {
+        this.idUser = idUser;
+        this.idWeapon = idWeapon;
+        this.isActive = isActive;
+    }
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
+
+    public long getIdWeapon() {
+        return idWeapon;
+    }
+
+    public void setIdWeapon(long idWeapon) {
+        this.idWeapon = idWeapon;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }

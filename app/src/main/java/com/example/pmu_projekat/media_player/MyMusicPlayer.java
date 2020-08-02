@@ -46,15 +46,6 @@ public class MyMusicPlayer extends Service {
         songList = new ArrayList<>();
         songList.add(R.raw.wotwpotp);
         songList.add(R.raw.winaf);
-
-        mediaPlayer = MediaPlayer.create(this, currentSong);
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                endOfTheSong();
-            }
-        });
     }
 
     @Override
@@ -64,15 +55,22 @@ public class MyMusicPlayer extends Service {
 
         switch (action) {
             case PLAY_TRACK: {
+                createPlayer();
                 mediaPlayer.start();
                 break;
             }
             case PAUSE_TRACK: {
-                mediaPlayer.pause();
+                if (mediaPlayer != null)
+                {
+                    mediaPlayer.pause();
+                }
                 break;
             }
             case STOP_TRACK: {
-                mediaPlayer.reset();
+                if (mediaPlayer != null)
+                {
+                    mediaPlayer.release();
+                }
                 break;
             }
         }
@@ -83,7 +81,11 @@ public class MyMusicPlayer extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mediaPlayer.stop();
+        if (mediaPlayer != null)
+        {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
 
     public void nextSong() {
@@ -112,17 +114,7 @@ public class MyMusicPlayer extends Service {
 
     public void playBackMusic() {
         try {
-            mediaPlayer.release();
-
-            mediaPlayer = MediaPlayer.create(this, currentSong);
-
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    endOfTheSong();
-                }
-            });
-
+            createPlayer();
             mediaPlayer.start();
 
         } catch (Exception e) {
@@ -147,5 +139,22 @@ public class MyMusicPlayer extends Service {
                 nextSong();
             }
         }
+    }
+
+    private void createPlayer()
+    {
+        if (mediaPlayer != null)
+        {
+            mediaPlayer.release();
+        }
+
+        mediaPlayer = MediaPlayer.create(this, currentSong);
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                endOfTheSong();
+            }
+        });
     }
 }

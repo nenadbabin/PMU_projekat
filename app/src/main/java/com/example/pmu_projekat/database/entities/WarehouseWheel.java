@@ -30,4 +30,34 @@ public class WarehouseWheel {
 
     @ColumnInfo(name = "is_active")
     public boolean isActive;
+
+    public WarehouseWheel(long idUser, long idWheel, boolean isActive) {
+        this.idUser = idUser;
+        this.idWheel = idWheel;
+        this.isActive = isActive;
+    }
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
+
+    public long getIdWheel() {
+        return idWheel;
+    }
+
+    public void setIdWheel(long idWheel) {
+        this.idWheel = idWheel;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }

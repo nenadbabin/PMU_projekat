@@ -78,6 +78,10 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                 if (GarageActivity.this.user.isMusic() == true)
                 {
                     Intent intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
+                    intent.putExtra("action", MyMusicPlayer.STOP_TRACK);
+                    startService(intent);
+
+                    intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
                     intent.putExtra("action", MyMusicPlayer.PLAY_TRACK);
                     startService(intent);
                 }
@@ -113,7 +117,14 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                 for (int i = 0; i < numberOfChests; i++)
                 {
                     ChestUtility chestUtility = new ChestUtility();
-                    chestUtility.setTime(chestsForUsername.get(i).getTimeToOpen() - new Date().getTime());
+                    if (chestsForUsername.get(i).getTimeToOpen() <= new Date().getTime())
+                    {
+                        chestUtility.setTime(0);
+                    }
+                    else
+                    {
+                        chestUtility.setTime(chestsForUsername.get(i).getTimeToOpen() - new Date().getTime());
+                    }
                     chestUtility.setDatabaseID(chestsForUsername.get(i).getId());
                     chestUtility.setInterfacePosition(i);
                     chestList.add(chestUtility);
@@ -135,7 +146,9 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
 
                                         int interfacePosition = chest.getInterfacePosition();
 
-                                        final Date date = new Date(time);
+                                        final int seconds = (int) (time / 1000) % 60 ;
+                                        final int minutes = (int) ((time / (1000 * 60)) % 60);
+                                        final int hours   = (int) ((time / (1000 * 60 * 60)) % 24);
 
                                         final TextView tv;
                                         switch (interfacePosition) {
@@ -159,7 +172,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                                         tv.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                tv.setText(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds());
+                                                tv.setText(hours + ":" + minutes + ":" + seconds);
                                             }
                                         });
 
@@ -210,7 +223,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
             public void onClick(View v) {
                 if (chestList.size() >= 1)
                 {
-                    if (chestList.get(0).getTime() == 0)
+                    if (chestList.get(0).isReady())
                     {
                         Toast.makeText(GarageActivity.this, "OPEN!", Toast.LENGTH_SHORT).show();
                     }
@@ -227,7 +240,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
             public void onClick(View v) {
                 if (chestList.size() >= 2)
                 {
-                    if (chestList.get(1).getTime() == 0)
+                    if (chestList.get(1).isReady())
                     {
                         Toast.makeText(GarageActivity.this, "OPEN!", Toast.LENGTH_SHORT).show();
                     }
@@ -244,7 +257,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
             public void onClick(View v) {
                 if (chestList.size() >= 3)
                 {
-                    if (chestList.get(2).getTime() == 0)
+                    if (chestList.get(2).isReady())
                     {
                         Toast.makeText(GarageActivity.this, "OPEN!", Toast.LENGTH_SHORT).show();
                     }
@@ -264,8 +277,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
 
         if (GarageActivity.this.user != null && GarageActivity.this.user.isMusic() == true) {
             Intent intent = new Intent(this, MyMusicPlayer.class);
-            intent.putExtra("action", MyMusicPlayer.PAUSE_TRACK);
-            startService(intent);
+            stopService(intent);
         }
     }
 
@@ -286,7 +298,11 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
 
         if (GarageActivity.this.user != null && GarageActivity.this.user.isMusic() == true)
         {
-            Intent intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
+            Intent intent = new Intent(this, MyMusicPlayer.class);
+            intent.putExtra("action", MyMusicPlayer.STOP_TRACK);
+            startService(intent);
+
+            intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
             intent.putExtra("action", MyMusicPlayer.PLAY_TRACK);
             startService(intent);
         }
@@ -301,6 +317,10 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         if (isMusic == true)
         {
             Intent intent = new Intent(this, MyMusicPlayer.class);
+            intent.putExtra("action", MyMusicPlayer.STOP_TRACK);
+            startService(intent);
+
+            intent = new Intent(this, MyMusicPlayer.class);
             intent.putExtra("action", MyMusicPlayer.PLAY_TRACK);
             startService(intent);
         }
