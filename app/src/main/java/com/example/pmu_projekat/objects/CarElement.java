@@ -47,7 +47,7 @@ public abstract class CarElement {
     }
 
     public int getHeight() {
-        return height;
+        return (int)(height * factor);
     }
 
     public void setHeight(int height) {
@@ -55,7 +55,7 @@ public abstract class CarElement {
     }
 
     public int getWidth() {
-        return width;
+        return (int)(width * factor);
     }
 
     public void setWidth(int width) {

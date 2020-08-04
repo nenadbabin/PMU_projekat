@@ -16,13 +16,31 @@ import com.example.pmu_projekat.ChestUtility;
 import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.database.AppDatabase;
+import com.example.pmu_projekat.database.entities.Chassis;
 import com.example.pmu_projekat.database.entities.Chest;
 import com.example.pmu_projekat.database.entities.User;
+import com.example.pmu_projekat.database.entities.WarehouseChassis;
+import com.example.pmu_projekat.database.entities.WarehouseWeapon;
+import com.example.pmu_projekat.database.entities.WarehouseWheel;
+import com.example.pmu_projekat.database.entities.Weapon;
+import com.example.pmu_projekat.database.entities.Wheel;
 import com.example.pmu_projekat.dialogs.SettingsDialog;
 import com.example.pmu_projekat.dialogs.SettingsReturnValue;
 import com.example.pmu_projekat.dialogs.StatisticsDialog;
 import com.example.pmu_projekat.media_player.MyMusicPlayer;
+import com.example.pmu_projekat.objects.CarElement;
+import com.example.pmu_projekat.objects.ChassisElement;
+import com.example.pmu_projekat.objects.chassis.ChassisBoulder;
+import com.example.pmu_projekat.objects.chassis.ChassisClassic;
+import com.example.pmu_projekat.objects.chassis.ChassisWhale;
+import com.example.pmu_projekat.objects.weapon.Chainsaw;
+import com.example.pmu_projekat.objects.weapon.Rocket;
+import com.example.pmu_projekat.objects.weapon.Stinger;
+import com.example.pmu_projekat.objects.wheel.Knob;
+import com.example.pmu_projekat.objects.wheel.Scooter;
+import com.example.pmu_projekat.objects.wheel.Tyre;
 import com.example.pmu_projekat.shared_preferences.MySharedPreferences;
+import com.example.pmu_projekat.views.CustomView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -268,6 +286,110 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                 }
             }
         });
+
+        final CustomView carView = findViewById(R.id.car_view);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WarehouseChassis activeChassis = appDatabase.warehouseDao().getActiveChassisForUser(GarageActivity.this.id);
+
+                if (activeChassis != null)
+                {
+                    ChassisElement chassisElement = null;
+
+                    Chassis chassis = appDatabase.carElementsDao().getChassis(activeChassis.getIdChassis());
+
+                    switch (chassis.getName())
+                    {
+                        case "classic" :
+                        {
+                            chassisElement = new ChassisClassic(carView.getContext(), 200, 200);
+                            break;
+                        }
+                        case "whale" :
+                        {
+                            chassisElement = new ChassisWhale(carView.getContext(), 200, 200);
+                            break;
+                        }
+                        case "boulder" :
+                        {
+                            chassisElement = new ChassisBoulder(carView.getContext(), 200, 200);
+                            break;
+                        }
+                    }
+
+                    WarehouseWeapon activeWeapon = appDatabase.warehouseDao().getActiveWeaponForUser(GarageActivity.this.id);
+
+                    if (activeWeapon != null)
+                    {
+                        Weapon weapon = appDatabase.carElementsDao().getWeapon(activeWeapon.getIdWeapon());
+
+                        CarElement weaponElement = null;
+
+                        switch (weapon.getName())
+                        {
+                            case "stringer" :
+                            {
+                                weaponElement = new Stinger(carView.getContext(), 0, 0);
+                                break;
+                            }
+                            case "chainsaw" :
+                            {
+                                weaponElement = new Chainsaw(carView.getContext(), 0, 0);
+                                break;
+                            }
+                            case "rocket" :
+                            {
+                                weaponElement = new Rocket(carView.getContext(), 0, 0);
+                                break;
+                            }
+                        }
+
+                        chassisElement.setWeapon(weaponElement);
+                    }
+
+                    WarehouseWheel activeWheel = appDatabase.warehouseDao().getActiveWheelForUser(GarageActivity.this.id);
+
+                    if (activeWheel != null)
+                    {
+                        Wheel wheel = appDatabase.carElementsDao().getWheel(activeWheel.getIdWheel());
+
+                        CarElement leftWheelElement = null;
+                        CarElement rightWheelElement = null;
+
+                        switch (wheel.getName())
+                        {
+                            case "knob" :
+                            {
+                                leftWheelElement = new Knob(carView.getContext(), 0, 0);
+                                rightWheelElement = new Knob(carView.getContext(), 0, 0);
+                                break;
+                            }
+                            case "scooter" :
+                            {
+                                leftWheelElement = new Scooter(carView.getContext(), 0, 0);
+                                rightWheelElement = new Scooter(carView.getContext(), 0, 0);
+                                break;
+                            }
+                            case "tyre" :
+                            {
+                                leftWheelElement = new Tyre(carView.getContext(), 0, 0);
+                                rightWheelElement = new Tyre(carView.getContext(), 0, 0);
+                                break;
+                            }
+                        }
+
+                        chassisElement.setWheelLeft(leftWheelElement);
+                        chassisElement.setWheelRight(rightWheelElement);
+                    }
+
+                    carView.setCar(chassisElement);
+                    carView.invalidate();
+
+                }
+            }
+        }).start();
 
     }
 

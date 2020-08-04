@@ -44,4 +44,15 @@ public interface CarElementsDAO {
 
     @Query("SELECT * FROM wheel")
     List<Wheel> getAllWheels();
+
+
+
+    @Query("SELECT * FROM chassis WHERE id = :id")
+    Chassis getChassis (long id);
+
+    @Query("SELECT * FROM weapon WHERE id = :id")
+    Weapon getWeapon (long id);
+
+    @Query("SELECT * FROM wheel WHERE id = :id")
+    Wheel getWheel (long id);
 }

@@ -16,6 +16,12 @@ public class ChassisWhale extends ChassisElement {
         super(context, x, y);
         this.width = 129;
         this.height = 75;
+        this.weaponCenterX = 40;
+        this.weaponCenterY = 8;
+        this.leftWheelCenterX = 18;
+        this.leftWheelCenterY = 65;
+        this.rightWheelCenterX = 75;
+        this.rightWheelCenterY = 65;
     }
 
     @Override
@@ -26,8 +32,6 @@ public class ChassisWhale extends ChassisElement {
 
         if (weapon != null)
         {
-            weapon.setX(x + 30);
-            weapon.setY(y);
 
             if (weapon instanceof Stinger)
             {
@@ -54,5 +58,7 @@ public class ChassisWhale extends ChassisElement {
             canvas.restore();*/
             weapon.draw(canvas);
         }
+
+        drawWheels(canvas);
     }
 }

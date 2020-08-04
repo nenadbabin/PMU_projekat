@@ -17,6 +17,13 @@ public class ChassisClassic extends ChassisElement {
         super(context, x, y);
         this.width = 128;
         this.height = 93;
+
+        this.weaponCenterX = 29;
+        this.weaponCenterY = 18;
+        this.leftWheelCenterX = 34;
+        this.leftWheelCenterY = 80;
+        this.rightWheelCenterX = 105;
+        this.rightWheelCenterY = 80;
     }
 
     @Override
@@ -45,5 +52,7 @@ public class ChassisClassic extends ChassisElement {
             canvas.restore();*/
             weapon.draw(canvas);
         }
+
+        drawWheels(canvas);
     }
 }

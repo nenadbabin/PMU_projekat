@@ -16,6 +16,13 @@ public class ChassisBoulder extends ChassisElement {
         super(context, x, y);
         this.width = 105;
         this.height = 109;
+
+        this.weaponCenterX = 50;
+        this.weaponCenterY = 13;
+        this.leftWheelCenterX = 20;
+        this.leftWheelCenterY = 99;
+        this.rightWheelCenterX = 87;
+        this.rightWheelCenterY = 99;
     }
 
     @Override
@@ -54,5 +61,7 @@ public class ChassisBoulder extends ChassisElement {
             canvas.restore();*/
             weapon.draw(canvas);
         }
+
+        drawWheels(canvas);
     }
 }

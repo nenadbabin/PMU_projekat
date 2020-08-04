@@ -45,4 +45,25 @@ public interface WarehouseDAO {
 
     @Query("SELECT * FROM warehouse_wheel")
     List<WarehouseWheel> getAllWheels();
+
+
+
+    @Query("SELECT * FROM warehouse_chassis where id_user = :userID")
+    List<WarehouseChassis> getChassisForUser(long userID);
+
+    @Query("SELECT * FROM warehouse_weapon where id_user = :userID")
+    List<WarehouseWeapon> getWeaponForUser(long userID);
+
+    @Query("SELECT * FROM warehouse_wheel where id_user = :userID")
+    List<WarehouseWheel> getWheelForUser(long userID);
+
+
+    @Query("SELECT * FROM warehouse_chassis WHERE id_user = :userID AND is_active = 1")
+    WarehouseChassis getActiveChassisForUser(long userID);
+
+    @Query("SELECT * FROM warehouse_weapon where id_user = :userID AND is_active = 1")
+    WarehouseWeapon getActiveWeaponForUser(long userID);
+
+    @Query("SELECT * FROM warehouse_wheel where id_user = :userID AND is_active = 1")
+    WarehouseWheel getActiveWheelForUser(long userID);
 }
