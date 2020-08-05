@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_2">
+
+    <com.example.pmu_projekat.views.CarEditView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"></com.example.pmu_projekat.views.CarEditView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="110dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="454dp" />
+
+    <ImageView
+        android:id="@+id/paper_iv"
+        android:layout_width="175dp"
+        android:layout_height="388dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_gl"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/paper" />
+
+    <TextView
+        android:id="@+id/comp_stats_tv"
+        android:layout_width="107dp"
+        android:layout_height="26dp"
+        android:fontFamily="cursive"
+        android:text="Component stats"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/comp_power_iv"
+        app:layout_constraintLeft_toLeftOf="@id/gl_paper_left"
+        app:layout_constraintRight_toRightOf="@id/gl_paper_right"
+        app:layout_constraintTop_toTopOf="@id/gl_paper_top" />
+
+    <ImageView
+        android:id="@+id/comp_power_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/thunder_small"
+        tools:layout_editor_absoluteX="552dp"
+        tools:layout_editor_absoluteY="105dp"
+        app:layout_constraintLeft_toLeftOf="@id/gl_paper_left"
+        app:layout_constraintRight_toLeftOf="@id/comp_power_tv"
+        app:layout_constraintTop_toBottomOf="@id/comp_stats_tv"
+        app:layout_constraintBottom_toTopOf="@id/comp_health_iv"/>
+
+    <TextView
+        android:id="@+id/comp_power_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="587dp"
+        tools:layout_editor_absoluteY="105dp"
+        app:layout_constraintLeft_toRightOf="@id/comp_power_iv"
+        app:layout_constraintRight_toRightOf="@id/gl_paper_right"
+        app:layout_constraintTop_toBottomOf="@id/comp_stats_tv"
+        app:layout_constraintBottom_toTopOf="@id/comp_health_iv"/>
+
+    <ImageView
+        android:id="@+id/comp_health_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/heart_small"
+        tools:layout_editor_absoluteX="552dp"
+        tools:layout_editor_absoluteY="137dp"
+        app:layout_constraintLeft_toLeftOf="@id/gl_paper_left"
+        app:layout_constraintRight_toLeftOf="@id/comp_health_tv"
+        app:layout_constraintTop_toBottomOf="@id/comp_power_tv"
+        app:layout_constraintBottom_toTopOf="@id/comp_energy_iv"/>
+
+    <TextView
+        android:id="@+id/comp_health_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="587dp"
+        tools:layout_editor_absoluteY="137dp"
+        app:layout_constraintLeft_toRightOf="@id/comp_health_iv"
+        app:layout_constraintRight_toRightOf="@id/gl_paper_right"
+        app:layout_constraintTop_toBottomOf="@id/comp_power_tv"
+        app:layout_constraintBottom_toTopOf="@id/comp_energy_iv"/>
+
+    <ImageView
+        android:id="@+id/comp_energy_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/fist_small"
+        tools:layout_editor_absoluteX="552dp"
+        tools:layout_editor_absoluteY="168dp"
+        app:layout_constraintLeft_toLeftOf="@id/gl_paper_left"
+        app:layout_constraintRight_toLeftOf="@id/comp_energy_tv"
+        app:layout_constraintTop_toBottomOf="@id/comp_health_iv"
+        app:layout_constraintBottom_toTopOf="@id/car_stats_tv"/>
+
+    <TextView
+        android:id="@+id/comp_energy_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="587dp"
+        tools:layout_editor_absoluteY="168dp"
+        app:layout_constraintLeft_toRightOf="@id/comp_energy_iv"
+        app:layout_constraintRight_toRightOf="@id/gl_paper_right"
+        app:layout_constraintTop_toBottomOf="@id/comp_health_iv"
+        app:layout_constraintBottom_toTopOf="@id/car_stats_tv"/>
+
+    <TextView
+        android:id="@+id/car_stats_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="Car stats"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/car_power_iv"
+        app:layout_constraintLeft_toLeftOf="@id/gl_paper_left"
+        app:layout_constraintRight_toRightOf="@id/gl_paper_right"
+        app:layout_constraintTop_toBottomOf="@id/comp_energy_tv" />
+
+    <ImageView
+        android:id="@+id/car_power_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/thunder_small"
+        tools:layout_editor_absoluteX="552dp"
+        tools:layout_editor_absoluteY="237dp"
+        app:layout_constraintLeft_toLeftOf="@id/gl_paper_left"
+        app:layout_constraintRight_toLeftOf="@id/car_power_tv"
+        app:layout_constraintTop_toBottomOf="@id/car_stats_tv"
+        app:layout_constraintBottom_toTopOf="@id/car_health_iv"/>
+
+    <TextView
+        android:id="@+id/car_power_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="587dp"
+        tools:layout_editor_absoluteY="237dp"
+        app:layout_constraintLeft_toRightOf="@id/car_power_iv"
+        app:layout_constraintRight_toRightOf="@id/gl_paper_right"
+        app:layout_constraintTop_toBottomOf="@id/car_stats_tv"
+        app:layout_constraintBottom_toTopOf="@id/car_health_iv"/>
+
+    <ImageView
+        android:id="@+id/car_health_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/heart_small"
+        tools:layout_editor_absoluteX="552dp"
+        tools:layout_editor_absoluteY="269dp"
+        app:layout_constraintLeft_toLeftOf="@id/gl_paper_left"
+        app:layout_constraintRight_toLeftOf="@id/car_health_tv"
+        app:layout_constraintTop_toBottomOf="@id/car_power_tv"
+        app:layout_constraintBottom_toTopOf="@id/car_energy_iv"/>
+
+    <TextView
+        android:id="@+id/car_health_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="587dp"
+        tools:layout_editor_absoluteY="269dp"
+        app:layout_constraintLeft_toRightOf="@id/car_health_iv"
+        app:layout_constraintRight_toRightOf="@id/gl_paper_right"
+        app:layout_constraintTop_toBottomOf="@id/car_power_tv"
+        app:layout_constraintBottom_toTopOf="@id/car_energy_iv"/>
+
+    <ImageView
+        android:id="@+id/car_energy_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/fist_small"
+        tools:layout_editor_absoluteX="552dp"
+        tools:layout_editor_absoluteY="301dp"
+        app:layout_constraintLeft_toLeftOf="@id/gl_paper_left"
+        app:layout_constraintRight_toLeftOf="@id/car_energy_tv"
+        app:layout_constraintTop_toBottomOf="@id/car_health_iv"
+        app:layout_constraintBottom_toTopOf="@id/gl_paper_bottom"/>
+
+    <TextView
+        android:id="@+id/car_energy_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="587dp"
+        tools:layout_editor_absoluteY="301dp"
+        app:layout_constraintLeft_toRightOf="@id/car_energy_iv"
+        app:layout_constraintRight_toRightOf="@id/gl_paper_right"
+        app:layout_constraintTop_toBottomOf="@id/car_health_iv"
+        app:layout_constraintBottom_toTopOf="@id/gl_paper_bottom"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_paper_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="210dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_paper_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="723dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_paper_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="50dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_paper_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="331dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

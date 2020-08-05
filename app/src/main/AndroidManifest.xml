@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activities.CarEditActivity"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
             android:name=".activities.GarageActivity"
             android:screenOrientation="landscape">
         </activity>
@@ -25,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".media_player.MyMusicPlayer" />
     </application>
 

@@ -289,6 +289,14 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
 
         final CustomView carView = findViewById(R.id.car_view);
 
+        carView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GarageActivity.this, CarEditActivity.class);
+                startActivity(intent);
+            }
+        });
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -304,17 +312,17 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     {
                         case "classic" :
                         {
-                            chassisElement = new ChassisClassic(carView.getContext(), 200, 200);
+                            chassisElement = new ChassisClassic(carView.getContext(), 150, 0);
                             break;
                         }
                         case "whale" :
                         {
-                            chassisElement = new ChassisWhale(carView.getContext(), 200, 200);
+                            chassisElement = new ChassisWhale(carView.getContext(), 150, 0);
                             break;
                         }
                         case "boulder" :
                         {
-                            chassisElement = new ChassisBoulder(carView.getContext(), 200, 200);
+                            chassisElement = new ChassisBoulder(carView.getContext(), 150, 0);
                             break;
                         }
                     }
