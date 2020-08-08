@@ -9,10 +9,11 @@
     android:background="@drawable/background_2">
 
     <com.example.pmu_projekat.views.CarEditView
+        android:id="@+id/car_edit_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"></com.example.pmu_projekat.views.CarEditView>
+        tools:layout_editor_absoluteX="259dp"
+        tools:layout_editor_absoluteY="-43dp"></com.example.pmu_projekat.views.CarEditView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_gl"
@@ -234,5 +235,59 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="331dp" />
+
+    <ImageView
+        android:id="@+id/arrow_left_iv"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:srcCompat="@drawable/left_arrow"
+        app:layout_constraintTop_toTopOf="@id/gl_paper_top"
+        app:layout_constraintLeft_toLeftOf="@id/gl_arrow_left"/>
+
+    <ImageView
+        android:id="@+id/arrow_right_iv"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:srcCompat="@drawable/right_arrow"
+        app:layout_constraintRight_toRightOf="@id/gl_arrow_right"
+        app:layout_constraintTop_toTopOf="@id/gl_paper_top"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_arrow_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="46dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_arrow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="566dp" />
+
+    <ImageView
+        android:id="@+id/car_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/car_frame"
+        app:layout_constraintTop_toTopOf="@id/gl_frame_top"
+        app:layout_constraintLeft_toLeftOf="@id/gl_arrow_left"
+        app:layout_constraintBottom_toBottomOf="@id/gl_frame_bottom"
+        app:layout_constraintRight_toRightOf="@id/vertical_gl"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_frame_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="180dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_frame_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="343dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
