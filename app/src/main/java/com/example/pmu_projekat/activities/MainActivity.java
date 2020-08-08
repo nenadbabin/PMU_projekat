@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             List<User> users = appdatabase.userDao().getAll();
                             for (int i = 0; i < users.size(); i++)
+
                             {
                                 if (users.get(i).getUsername().equals(playerName))
                                 {

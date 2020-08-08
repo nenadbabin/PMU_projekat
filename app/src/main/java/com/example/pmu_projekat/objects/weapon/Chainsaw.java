@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
 import com.example.pmu_projekat.R;
+import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.objects.CarElement;
 
 public class Chainsaw extends CarElement {
@@ -20,5 +21,15 @@ public class Chainsaw extends CarElement {
         Drawable d = context.getResources().getDrawable(R.drawable.chainsaw, null);
         d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
         d.draw(canvas);
+    }
+
+    @Override
+    public int getElementType() {
+        return Constants.TYPE_WEAPON;
+    }
+
+    @Override
+    public int getElementIdentity() {
+        return Constants.WPN_CHAINSAW;
     }
 }

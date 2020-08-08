@@ -24,6 +24,8 @@ public abstract class CarElement {
     Stack<Point> positionStack;
 
     public abstract void draw (Canvas canvas);
+    public abstract int getElementType();
+    public abstract int getElementIdentity();
 
     public CarElement(Context context, int x, int y) {
         this.context = context;

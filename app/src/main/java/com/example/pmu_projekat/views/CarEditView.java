@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.example.pmu_projekat.objects.CarElement;
+import com.example.pmu_projekat.objects.ChassisElement;
 
 public class CarEditView extends View {
 
@@ -15,7 +16,7 @@ public class CarEditView extends View {
     private int xCoordinates [] = {200, 450, 700};
     private int yCoordinates [] = {50, 50, 50};
 
-    private CarElement car = null;
+    private ChassisElement car = null;
     private int frameX0;
     private int frameX1;
     private int frameY0;
@@ -69,11 +70,11 @@ public class CarEditView extends View {
         }
     }
 
-    public CarElement getCar() {
+    public ChassisElement getCar() {
         return car;
     }
 
-    public void setCar(CarElement car) {
+    public void setCar(ChassisElement car) {
         this.car = car;
     }
 

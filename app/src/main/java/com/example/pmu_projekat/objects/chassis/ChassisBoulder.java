@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
 import com.example.pmu_projekat.R;
+import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.objects.ChassisElement;
 import com.example.pmu_projekat.objects.weapon.Chainsaw;
 import com.example.pmu_projekat.objects.weapon.Rocket;
@@ -63,5 +64,15 @@ public class ChassisBoulder extends ChassisElement {
         }
 
         drawWheels(canvas);
+    }
+
+    @Override
+    public int getElementType() {
+        return Constants.TYPE_CHASSIS;
+    }
+
+    @Override
+    public int getElementIdentity() {
+        return Constants.C_BOULDER;
     }
 }

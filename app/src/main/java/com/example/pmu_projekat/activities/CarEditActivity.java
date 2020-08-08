@@ -5,15 +5,12 @@ import androidx.constraintlayout.widget.Guideline;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
@@ -56,6 +53,8 @@ public class CarEditActivity extends AppCompatActivity {
     private TextView componentHealthTV;
     private TextView componentEnergyTV;
 
+    private CarEditView carEditView;
+
     private int position = 0;
 
     private int frameX0;
@@ -79,7 +78,7 @@ public class CarEditActivity extends AppCompatActivity {
         ImageView leftArrowIV = findViewById(R.id.arrow_left_iv);
         ImageView rightArrowIV = findViewById(R.id.arrow_right_iv);
 
-        final CarEditView carEditView = findViewById(R.id.car_edit_view);
+        carEditView = findViewById(R.id.car_edit_view);
 
         carPowerTV = findViewById(R.id.car_power_tv);
         carHealthTV = findViewById(R.id.car_health_tv);
@@ -500,7 +499,7 @@ public class CarEditActivity extends AppCompatActivity {
                     {
                         if (carElement.getY() > frameY0 && carElement.getY() < frameY1)
                         {
-                            Toast.makeText(this, "IN", Toast.LENGTH_SHORT).show();
+                            updateCar(carElement);
                         }
                     }
                     carElement.setX(p.x);
@@ -523,7 +522,7 @@ public class CarEditActivity extends AppCompatActivity {
                     {
                         if (carElement.getY() > frameY0 && carElement.getY() < frameY1)
                         {
-                            Toast.makeText(this, "IN", Toast.LENGTH_SHORT).show();
+                            updateCar(carElement);
                         }
                     }
                     carElement.setX(p.x);
@@ -546,7 +545,7 @@ public class CarEditActivity extends AppCompatActivity {
                     {
                         if (carElement.getY() > frameY0 && carElement.getY() < frameY1)
                         {
-                            Toast.makeText(this, "IN", Toast.LENGTH_SHORT).show();
+                            updateCar(carElement);
                         }
                     }
                     carElement.setX(p.x);
@@ -555,6 +554,79 @@ public class CarEditActivity extends AppCompatActivity {
                 }
                 return;
             }
+        }
+    }
+
+    private void updateCar(CarElement carElement)
+    {
+        if (carElement.getElementType() == Constants.TYPE_WEAPON)
+        {
+            CarElement ce = null;
+            switch (carElement.getElementIdentity())
+            {
+                case Constants.WPN_CHAINSAW : {
+                    ce = new Chainsaw(carEditView.getContext(), 0,0);
+                    break;
+                }
+                case Constants.WPN_ROCKET : {
+                    ce = new Rocket(carEditView.getContext(), 0,0);
+                    break;
+                }
+                case Constants.WPN_STINGER : {
+                    ce = new Stinger(carEditView.getContext(), 0,0);
+                    break;
+                }
+            }
+            carEditView.getCar().setWeapon(ce);
+        }
+        else if (carElement.getElementType() == Constants.TYPE_WHEEL)
+        {
+            CarElement wl = null;
+            CarElement wr = null;
+            switch (carElement.getElementIdentity())
+            {
+                case Constants.WHL_KNOB : {
+                    wl = new Knob(carEditView.getContext(), 0,0);
+                    wr = new Knob(carEditView.getContext(), 0,0);
+                    break;
+                }
+                case Constants.WHL_SCOOTER : {
+                    wl = new Scooter(carEditView.getContext(), 0,0);
+                    wr = new Scooter(carEditView.getContext(), 0,0);
+                    break;
+                }
+                case Constants.WHL_TYRE : {
+                    wl = new Tyre(carEditView.getContext(), 0,0);
+                    wr = new Tyre(carEditView.getContext(), 0,0);
+                    break;
+                }
+            }
+            carEditView.getCar().setWheelLeft(wl);
+            carEditView.getCar().setWheelRight(wr);
+        }
+        else if (carElement.getElementType() == Constants.TYPE_CHASSIS)
+        {
+            ChassisElement ce = null;
+            switch (carElement.getElementIdentity())
+            {
+                case Constants.C_BOULDER : {
+                    ce = new ChassisBoulder(carEditView.getContext(), 0, 0);
+                    break;
+                }
+                case Constants.C_CLASSIC : {
+                    ce = new ChassisClassic(carEditView.getContext(), 0, 0);
+                    break;
+                }
+                case Constants.C_WHALE : {
+                    ce = new ChassisWhale(carEditView.getContext(), 0, 0);
+                    break;
+                }
+            }
+            ChassisElement car = carEditView.getCar();
+            ce.setWeapon(car.getWeapon());
+            ce.setWheelLeft(car.getWheelLeft());
+            ce.setWheelRight(car.getWheelRight());
+            carEditView.setCar(ce);
         }
     }
 

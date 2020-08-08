@@ -8,4 +8,18 @@ public class Constants {
 
     public static final String USERNAME_STRING = "username";
     public static final String ID_STRING = "id";
+
+    public static final int TYPE_CHASSIS = 1;
+    public static final int TYPE_WEAPON = 2;
+    public static final int TYPE_WHEEL = 3;
+
+    public static final int C_BOULDER = 4;
+    public static final int C_CLASSIC = 5;
+    public static final int C_WHALE = 6;
+    public static final int WPN_CHAINSAW = 7;
+    public static final int WPN_ROCKET = 8;
+    public static final int WPN_STINGER = 9;
+    public static final int WHL_KNOB = 10;
+    public static final int WHL_SCOOTER = 11;
+    public static final int WHL_TYRE = 12;
 }
