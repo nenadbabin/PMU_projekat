@@ -87,9 +87,13 @@ public abstract class AppDatabase extends RoomDatabase {
             chest.setIdUser(userID);
             Date d = new Date();
             long milis = d.getTime();
-            milis += 60000;
+            //milis += 60000;
+            milis += 5000;
             chest.setTimeToOpen(milis);
             long insert = chestDAO.insert(chest);
+            milis += 10000;
+            chest.setTimeToOpen(milis);
+            chestDAO.insert(chest);
 
             Log.d(Constants.APP_DATABASE_DEBUG_TAG, "insert " + insert);
 

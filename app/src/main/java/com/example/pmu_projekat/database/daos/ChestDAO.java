@@ -25,4 +25,7 @@ public interface ChestDAO {
 
     @Insert
     long insert(Chest chest);
+
+    @Query("DELETE FROM chest WHERE id = :id")
+    void delete(long id);
 }

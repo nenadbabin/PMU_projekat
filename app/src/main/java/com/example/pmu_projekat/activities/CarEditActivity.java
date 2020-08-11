@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
@@ -44,7 +46,6 @@ public class CarEditActivity extends AppCompatActivity {
     private String username;
 
     private List<CarElement> availableComponents;
-    private List<CarElement> usedComponents;
 
     private TextView carPowerTV;
     private TextView carHealthTV;
@@ -68,7 +69,6 @@ public class CarEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_car_edit);
 
         availableComponents = new ArrayList<>();
-        usedComponents = new ArrayList<>();
 
         final AppDatabase appDatabase = AppDatabase.getDatabase(this);
 
@@ -94,6 +94,49 @@ public class CarEditActivity extends AppCompatActivity {
         componentPowerTV.setText("0");
         componentHealthTV.setText("0");
         componentEnergyTV.setText("0");
+
+        Button saveButton = findViewById(R.id.btn_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        appDatabase.warehouseDao().clearActiveChassisForUser(CarEditActivity.this.id);
+                        appDatabase.warehouseDao().clearActiveWeaponForUser(CarEditActivity.this.id);
+                        appDatabase.warehouseDao().clearActiveWheelForUser(CarEditActivity.this.id);
+
+                        ChassisElement car = carEditView.getCar();
+
+                        if (car != null)
+                        {
+                            long chassisID = car.getDatabaseID();
+                            appDatabase.warehouseDao().updateActiveChassisForUser(CarEditActivity.this.id, chassisID);
+
+                            if (car.getWeapon() != null)
+                            {
+                                CarElement weapon = car.getWeapon();
+                                appDatabase.warehouseDao().updateActiveWeaponForUser(CarEditActivity.this.id, weapon.getDatabaseID());
+                            }
+
+                            if (car.getWheelLeft() != null)
+                            {
+                                CarElement wheel = car.getWheelLeft();
+                                appDatabase.warehouseDao().updateActiveWheelForUser(CarEditActivity.this.id, wheel.getDatabaseID());
+                            }
+                        }
+
+                        CarEditActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(CarEditActivity.this, "Car successfully saved", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                }).start();
+            }
+        });
 
         final ImageView carFrame = findViewById(R.id.car_frame);
 
@@ -163,9 +206,10 @@ public class CarEditActivity extends AppCompatActivity {
 
                         chassisElement = createChassis(carEditView.getContext(), chassis);
 
+                        chassisElement.setDatabaseID(chassis.getId());
+
                         chassisElement.setHealth(chassis.getHealth());
                         chassisElement.setEnergy(chassis.getEnergy());
-                        usedComponents.add(chassisElement);
 
                         WarehouseWeapon activeWeapon = appDatabase.warehouseDao().getActiveWeaponForUser(CarEditActivity.this.id);
 
@@ -174,13 +218,13 @@ public class CarEditActivity extends AppCompatActivity {
 
                             weaponElement = createWeapon(carEditView.getContext(), weapon);
 
+                            weaponElement.setDatabaseID(weapon.getId());
+
                             weaponElement.setPower(weapon.getPower());
                             weaponElement.setHealth(weapon.getHealth());
                             weaponElement.setEnergy(weapon.getEnergy());
 
                             chassisElement.setWeapon(weaponElement);
-
-                            usedComponents.add(weaponElement);
 
                         }
 
@@ -192,13 +236,15 @@ public class CarEditActivity extends AppCompatActivity {
                             leftWheelElement = createWheel(carEditView.getContext(), wheel);
                             rightWheelElement = createWheel(carEditView.getContext(), wheel);
 
+                            leftWheelElement.setDatabaseID(wheel.getId());
+                            rightWheelElement.setDatabaseID(wheel.getId());
+
                             leftWheelElement.setHealth(wheel.getHealth());
                             rightWheelElement.setHealth(wheel.getHealth());
 
                             chassisElement.setWheelLeft(leftWheelElement);
                             chassisElement.setWheelRight(rightWheelElement);
 
-                            usedComponents.add(leftWheelElement);
                         }
 
                         int health = 0;
@@ -242,7 +288,6 @@ public class CarEditActivity extends AppCompatActivity {
                         });
 
                         carEditView.setCar(chassisElement);
-                        Log.d(Constants.CAR_EDIT_ACTIVITY_DEBUG_TAG, "Used components: " + usedComponents.size());
                     }
                 } // end of create owner's car
 
@@ -254,6 +299,7 @@ public class CarEditActivity extends AppCompatActivity {
                         long idChassis = chassisForUser.get(i).getIdChassis();
                         Chassis chassis = appDatabase.carElementsDao().getChassis(idChassis);
                         ChassisElement chassisElement = createChassis(carEditView.getContext(), chassis);
+                        chassisElement.setDatabaseID(chassis.getId());
                         chassisElement.setHealth(chassis.getHealth());
                         chassisElement.setEnergy(chassis.getEnergy());
                         availableComponents.add(chassisElement);
@@ -265,6 +311,7 @@ public class CarEditActivity extends AppCompatActivity {
                         long idWeapon = weaponForUser.get(i).getIdWeapon();
                         Weapon weapon = appDatabase.carElementsDao().getWeapon(idWeapon);
                         CarElement weaponElement = createWeapon(carEditView.getContext(), weapon);
+                        weaponElement.setDatabaseID(weapon.getId());
                         weaponElement.setPower(weapon.getPower());
                         weaponElement.setHealth(weapon.getHealth());
                         weaponElement.setEnergy(weapon.getEnergy());
@@ -277,6 +324,7 @@ public class CarEditActivity extends AppCompatActivity {
                         long idWheel = wheelForUser.get(i).getIdWheel();
                         Wheel wheel = appDatabase.carElementsDao().getWheel(idWheel);
                         CarElement wheelElement = createWheel(carEditView.getContext(), wheel);
+                        wheelElement.setDatabaseID(wheel.getId());
                         wheelElement.setHealth(wheel.getHealth());
                         availableComponents.add(wheelElement);
                     }
@@ -308,6 +356,7 @@ public class CarEditActivity extends AppCompatActivity {
                 {
                     case MotionEvent.ACTION_DOWN : {
                         checkIfSomeComponentIsTouched(x, y);
+                        checkIfCarIsTouched(x, y);
                         //Log.d(Constants.CAR_EDIT_ACTIVITY_DEBUG_TAG, "x: " + x + " y: " + y);
                         break;
                     }
@@ -328,7 +377,7 @@ public class CarEditActivity extends AppCompatActivity {
 
     }
 
-    private ChassisElement createChassis (Context context, Chassis chassis)
+    public static ChassisElement createChassis (Context context, Chassis chassis)
     {
         ChassisElement chassisElement = null;
         switch (chassis.getName()) {
@@ -349,7 +398,7 @@ public class CarEditActivity extends AppCompatActivity {
         return chassisElement;
     }
 
-    private CarElement createWeapon (Context context, Weapon weapon)
+    public static CarElement createWeapon (Context context, Weapon weapon)
     {
         CarElement weaponElement = null;
 
@@ -371,7 +420,7 @@ public class CarEditActivity extends AppCompatActivity {
         return weaponElement;
     }
 
-    private CarElement createWheel (Context context, Wheel wheel)
+    public static CarElement createWheel (Context context, Wheel wheel)
     {
         CarElement wheelElement = null;
 
@@ -561,6 +610,13 @@ public class CarEditActivity extends AppCompatActivity {
     {
         if (carElement.getElementType() == Constants.TYPE_WEAPON)
         {
+
+            if (carEditView.getCar() == null)
+            {
+                Toast.makeText(this, "You need chassis first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             CarElement ce = null;
             switch (carElement.getElementIdentity())
             {
@@ -577,10 +633,27 @@ public class CarEditActivity extends AppCompatActivity {
                     break;
                 }
             }
+            ce.setDatabaseID(carElement.getDatabaseID());
+            ce.setPower(carElement.getPower());
+            ce.setHealth(carElement.getHealth());
+            ce.setEnergy(carElement.getEnergy());
+
+            if (carEditView.getCar().getEnergy() < ce.getEnergy())
+            {
+                Toast.makeText(this, "Chassis doesn't have enough energy to support this weapon", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             carEditView.getCar().setWeapon(ce);
         }
         else if (carElement.getElementType() == Constants.TYPE_WHEEL)
         {
+            if (carEditView.getCar() == null)
+            {
+                Toast.makeText(this, "You need chassis first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             CarElement wl = null;
             CarElement wr = null;
             switch (carElement.getElementIdentity())
@@ -601,6 +674,10 @@ public class CarEditActivity extends AppCompatActivity {
                     break;
                 }
             }
+            wl.setDatabaseID(carElement.getDatabaseID());
+            wr.setDatabaseID(carElement.getDatabaseID());
+            wl.setHealth(carElement.getHealth());
+            wr.setHealth(carElement.getHealth());
             carEditView.getCar().setWheelLeft(wl);
             carEditView.getCar().setWheelRight(wr);
         }
@@ -622,11 +699,99 @@ public class CarEditActivity extends AppCompatActivity {
                     break;
                 }
             }
-            ChassisElement car = carEditView.getCar();
-            ce.setWeapon(car.getWeapon());
-            ce.setWheelLeft(car.getWheelLeft());
-            ce.setWheelRight(car.getWheelRight());
+
+            ChassisElement oldCar = carEditView.getCar();
+            if (oldCar != null)
+            {
+                ce.setWeapon(oldCar.getWeapon());
+                ce.setWheelLeft(oldCar.getWheelLeft());
+                ce.setWheelRight(oldCar.getWheelRight());
+            }
+
+            ce.setDatabaseID(carElement.getDatabaseID());
+            ce.setHealth(carElement.getHealth());
+            ce.setEnergy(carElement.getEnergy());
+
+            if (oldCar != null)
+            {
+                if (oldCar.getWeapon() != null)
+                {
+                    if (ce.getEnergy() < oldCar.getWeapon().getEnergy())
+                    {
+                        Toast.makeText(this, "Chassis doesn't have enough energy to support this weapon", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            }
             carEditView.setCar(ce);
+        }
+
+        ChassisElement car = carEditView.getCar();
+        updateCarAbility(car);
+    }
+
+    private void checkIfCarIsTouched(int x, int y)
+    {
+        ChassisElement car = carEditView.getCar();
+        if (car != null)
+        {
+            if (car.getWheelLeft() != null && car.getWheelRight() != null)
+            {
+                if (car.getWheelLeft().isTouched(x, y) || car.getWheelRight().isTouched(x, y))
+                {
+                    car.setWheelLeft(null);
+                    car.setWheelRight(null);
+                    updateCarAbility(car);
+                    return;
+                }
+            }
+            if (car.getWeapon() != null)
+            {
+                if (car.getWeapon().isTouched(x, y))
+                {
+                    car.setWeapon(null);
+                    updateCarAbility(car);
+                    return;
+                }
+            }
+
+            if (car.getWeapon() == null && car.getWheelLeft() == null && car.getWheelRight() == null)
+            {
+                if (car.isTouched(x,y))
+                {
+                    carEditView.setCar(null);
+                    updateCarAbility(null);
+                    return;
+                }
+            }
+        }
+    }
+
+    private void updateCarAbility(ChassisElement car)
+    {
+        carEnergyTV.setText("0");
+        carPowerTV.setText("0");
+        carHealthTV.setText("0");
+
+        if (car != null)
+        {
+            int health = 0;
+            carEnergyTV.setText("" + car.getEnergy());
+            health += car.getHealth();
+
+            if (car.getWeapon() != null) {
+                carPowerTV.setText("" + car.getWeapon().getPower());
+                health += car.getWeapon().getHealth();
+            }
+
+            if (car.getWheelLeft() != null) {
+                health += car.getWheelLeft().getHealth();
+            }
+
+            if (car.getWheelRight() != null) {
+                health += car.getWheelRight().getHealth();
+            }
+            carHealthTV.setText("" + health);
         }
     }
 

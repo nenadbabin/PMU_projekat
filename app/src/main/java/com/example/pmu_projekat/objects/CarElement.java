@@ -23,6 +23,8 @@ public abstract class CarElement {
 
     Stack<Point> positionStack;
 
+    protected long databaseID;
+
     public abstract void draw (Canvas canvas);
     public abstract int getElementType();
     public abstract int getElementIdentity();
@@ -145,5 +147,13 @@ public abstract class CarElement {
         {
             return null;
         }
+    }
+
+    public long getDatabaseID() {
+        return databaseID;
+    }
+
+    public void setDatabaseID(long databaseID) {
+        this.databaseID = databaseID;
     }
 }

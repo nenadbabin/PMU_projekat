@@ -34,25 +34,20 @@ public class ChassisBoulder extends ChassisElement {
 
         if (weapon != null)
         {
-            weapon.setX(x + 30);
-            weapon.setY(y);
+            weapon.setX(x + getWidth() / 2);
+            weapon.setY(y + getHeight() / 2);
 
             if (weapon instanceof Stinger)
             {
-                weapon.setX(x + 30);
-                weapon.setY(y - 10);
                 weapon.setFactor(1.3);
             }
             else if (weapon instanceof Rocket)
             {
-                weapon.setX(x + 40);
-                weapon.setY(y - 10);
+                weapon.setY(y + getHeight() / 2 - 20);
                 weapon.setFactor(0.6);
             }
             else if (weapon instanceof Chainsaw)
             {
-                weapon.setX(x + 30);
-                weapon.setY(y - 10);
                 weapon.setFactor(1.3);
             }
 
