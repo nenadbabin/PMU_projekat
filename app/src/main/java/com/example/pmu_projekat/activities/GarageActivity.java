@@ -44,7 +44,6 @@ import com.example.pmu_projekat.shared_preferences.MySharedPreferences;
 import com.example.pmu_projekat.views.CustomView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -78,6 +77,16 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         this.username = MySharedPreferences.getString(this, Constants.USERNAME_STRING);
 
         this.carElementList = new ArrayList<>();
+
+        Button btnPlay = findViewById(R.id.btn_play);
+
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GarageActivity.this, BattleActivity.class);
+                startActivity(intent);
+            }
+        });
 
         appDatabase.userDao().getUserById(id).observe(this, new Observer<User>() {
             @Override
@@ -461,7 +470,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ChassisElement chassisElement = createCar(carView);
+                ChassisElement chassisElement = createCar(carView, GarageActivity.this.id, appDatabase);
                 carView.setCar(chassisElement);
                 carView.invalidate();
             }
@@ -499,14 +508,14 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         }).start();
     }
 
-    private ChassisElement createCar(CustomView carView)
+    public static ChassisElement createCar(View carView, int id, AppDatabase database)
     {
-        WarehouseChassis activeChassis = appDatabase.warehouseDao().getActiveChassisForUser(GarageActivity.this.id);
+        WarehouseChassis activeChassis = database.warehouseDao().getActiveChassisForUser(id);
 
         if (activeChassis != null) {
             ChassisElement chassisElement = null;
 
-            Chassis chassis = appDatabase.carElementsDao().getChassis(activeChassis.getIdChassis());
+            Chassis chassis = database.carElementsDao().getChassis(activeChassis.getIdChassis());
 
             switch (chassis.getName()) {
                 case "classic": {
@@ -523,10 +532,13 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                 }
             }
 
-            WarehouseWeapon activeWeapon = appDatabase.warehouseDao().getActiveWeaponForUser(GarageActivity.this.id);
+            chassisElement.setHealth(chassis.getHealth());
+            chassisElement.setEnergy(chassis.getEnergy());
+
+            WarehouseWeapon activeWeapon = database.warehouseDao().getActiveWeaponForUser(id);
 
             if (activeWeapon != null) {
-                Weapon weapon = appDatabase.carElementsDao().getWeapon(activeWeapon.getIdWeapon());
+                Weapon weapon = database.carElementsDao().getWeapon(activeWeapon.getIdWeapon());
 
                 CarElement weaponElement = null;
 
@@ -545,13 +557,17 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     }
                 }
 
+                weaponElement.setPower(weapon.getPower());
+                weaponElement.setHealth(weapon.getHealth());
+                weaponElement.setEnergy(weapon.getEnergy());
+
                 chassisElement.setWeapon(weaponElement);
             }
 
-            WarehouseWheel activeWheel = appDatabase.warehouseDao().getActiveWheelForUser(GarageActivity.this.id);
+            WarehouseWheel activeWheel = database.warehouseDao().getActiveWheelForUser(id);
 
             if (activeWheel != null) {
-                Wheel wheel = appDatabase.carElementsDao().getWheel(activeWheel.getIdWheel());
+                Wheel wheel = database.carElementsDao().getWheel(activeWheel.getIdWheel());
 
                 CarElement leftWheelElement = null;
                 CarElement rightWheelElement = null;
@@ -573,6 +589,9 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                         break;
                     }
                 }
+
+                leftWheelElement.setHealth(wheel.getHealth());
+                rightWheelElement.setHealth(wheel.getHealth());
 
                 chassisElement.setWheelLeft(leftWheelElement);
                 chassisElement.setWheelRight(rightWheelElement);

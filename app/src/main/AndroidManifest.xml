@@ -12,13 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.BattleActivity"></activity>
+        <activity
+            android:name=".activities.BattleActivity"
+            android:screenOrientation="landscape">
+        </activity>
         <activity
             android:name=".activities.CarEditActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape">
+        </activity>
         <activity
             android:name=".activities.GarageActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape">
+        </activity>
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="landscape">

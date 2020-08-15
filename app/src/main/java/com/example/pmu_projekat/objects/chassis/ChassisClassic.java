@@ -25,13 +25,27 @@ public class ChassisClassic extends ChassisElement {
         this.leftWheelCenterY = 80;
         this.rightWheelCenterX = 105;
         this.rightWheelCenterY = 80;
+
+        this.leftWheelCenterXReverse = 22;
+        this.leftWheelCenterYReverse = 80;
+        this.rightWheelCenterXReverse = 93;
+        this.rightWheelCenterYReverse = 80;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        Drawable d = context.getResources().getDrawable(R.drawable.c_classic, null);
-        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-        d.draw(canvas);
+        if (!isReverse)
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.c_classic, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
+        else
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.c_classic_reverse, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
 
         if (weapon != null)
         {
@@ -41,10 +55,16 @@ public class ChassisClassic extends ChassisElement {
             if (weapon instanceof Stinger || weapon instanceof Chainsaw)
             {
                 weapon.setFactor(1.5);
+                weapon.setX(weapon.getX() - 50);
             }
             else if (weapon instanceof Rocket)
             {
                 weapon.setFactor(0.6);
+
+                if (isReverse)
+                {
+                    weapon.setX(weapon.getX() + 30);
+                }
             }
 
             /*canvas.save();
@@ -55,6 +75,8 @@ public class ChassisClassic extends ChassisElement {
         }
 
         drawWheels(canvas);
+
+        calculateBounds();
     }
 
     @Override

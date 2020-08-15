@@ -24,13 +24,28 @@ public class ChassisBoulder extends ChassisElement {
         this.leftWheelCenterY = 99;
         this.rightWheelCenterX = 87;
         this.rightWheelCenterY = 99;
+
+        this.leftWheelCenterXReverse = 17;
+        this.leftWheelCenterYReverse = 98;
+        this.rightWheelCenterXReverse = 84;
+        this.rightWheelCenterYReverse = 98;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        Drawable d = context.getResources().getDrawable(R.drawable.c_boulder, null);
-        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-        d.draw(canvas);
+
+        if (!isReverse)
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.c_boulder, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
+        else
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.c_boulder_reverse, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
 
         if (weapon != null)
         {
@@ -59,6 +74,8 @@ public class ChassisBoulder extends ChassisElement {
         }
 
         drawWheels(canvas);
+
+        calculateBounds();
     }
 
     @Override

@@ -5,6 +5,7 @@ public class Constants {
     public static final String APP_DATABASE_DEBUG_TAG = "APP_DATABASE_DEBUG_TAG";
     public static final String GARAGE_ACTIVITY_DEBUG_TAG = "GARAGE_ACTIVITY_DEBUG_TAG";
     public static final String CAR_EDIT_ACTIVITY_DEBUG_TAG = "CAR_EDIT_ACTIVITY_DEBUG_TAG";
+    public static final String BATTLE_ACTIVITY_DEBUG_TAG = "BATTLE_ACTIVITY_DEBUG_TAG";
 
     public static final String USERNAME_STRING = "username";
     public static final String ID_STRING = "id";
@@ -22,4 +23,7 @@ public class Constants {
     public static final int WHL_KNOB = 10;
     public static final int WHL_SCOOTER = 11;
     public static final int WHL_TYRE = 12;
+
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
 }

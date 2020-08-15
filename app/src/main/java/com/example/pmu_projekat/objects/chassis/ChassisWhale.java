@@ -23,13 +23,27 @@ public class ChassisWhale extends ChassisElement {
         this.leftWheelCenterY = 65;
         this.rightWheelCenterX = 75;
         this.rightWheelCenterY = 65;
+
+        this.leftWheelCenterXReverse = 54;
+        this.leftWheelCenterYReverse = 66;
+        this.rightWheelCenterXReverse = 111;
+        this.rightWheelCenterYReverse = 66;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        Drawable d = context.getResources().getDrawable(R.drawable.c_whale, null);
-        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-        d.draw(canvas);
+        if (!isReverse)
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.c_whale, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
+        else
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.c_whale_reverse, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
 
         if (weapon != null)
         {
@@ -61,6 +75,8 @@ public class ChassisWhale extends ChassisElement {
         }
 
         drawWheels(canvas);
+
+        calculateBounds();
     }
 
     @Override

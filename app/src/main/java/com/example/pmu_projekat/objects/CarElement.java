@@ -25,6 +25,8 @@ public abstract class CarElement {
 
     protected long databaseID;
 
+    protected boolean isReverse;
+
     public abstract void draw (Canvas canvas);
     public abstract int getElementType();
     public abstract int getElementIdentity();
@@ -155,5 +157,13 @@ public abstract class CarElement {
 
     public void setDatabaseID(long databaseID) {
         this.databaseID = databaseID;
+    }
+
+    public boolean isReverse() {
+        return isReverse;
+    }
+
+    public void setReverse(boolean reverse) {
+        isReverse = reverse;
     }
 }

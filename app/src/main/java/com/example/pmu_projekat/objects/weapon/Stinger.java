@@ -18,9 +18,18 @@ public class Stinger extends CarElement {
 
     @Override
     public void draw(Canvas canvas) {
-        Drawable d = context.getResources().getDrawable(R.drawable.stinger, null);
-        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-        d.draw(canvas);
+        if (!isReverse)
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.stinger, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
+        else
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.stinger_reverse, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
     }
 
     @Override

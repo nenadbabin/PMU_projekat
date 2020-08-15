@@ -18,9 +18,18 @@ public class Rocket extends CarElement {
 
     @Override
     public void draw(Canvas canvas) {
-        Drawable d = context.getResources().getDrawable(R.drawable.rocket, null);
-        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-        d.draw(canvas);
+        if (!isReverse)
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.rocket, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
+        else
+        {
+            Drawable d = context.getResources().getDrawable(R.drawable.rocket_reverse, null);
+            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+            d.draw(canvas);
+        }
     }
 
     @Override

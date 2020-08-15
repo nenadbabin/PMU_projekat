@@ -1,7 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_3">
+
+    <com.example.pmu_projekat.views.BattleView
+        android:id="@+id/battle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.example.pmu_projekat.views.BattleView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_health_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_health_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_health_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_health_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <ImageView
+        android:id="@+id/heart_p1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/heart"
+        app:layout_constraintLeft_toLeftOf="@id/gl_health_left"
+        app:layout_constraintTop_toTopOf="@id/gl_health_top"/>
+
+    <ImageView
+        android:id="@+id/heart_p2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/heart"
+        app:layout_constraintRight_toRightOf="@id/gl_health_right"
+        app:layout_constraintTop_toTopOf="@id/gl_health_top"/>
+
+    <TextView
+        android:id="@+id/tv_health_p1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="120"
+        app:layout_constraintLeft_toRightOf="@id/heart_p1"
+        app:layout_constraintTop_toTopOf="@id/gl_health_top"
+        app:layout_constraintBottom_toBottomOf="@id/heart_p1"
+        android:layout_marginLeft="20dp"/>
+
+    <TextView
+        android:id="@+id/tv_health_p2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="120"
+        app:layout_constraintRight_toLeftOf="@id/heart_p2"
+        app:layout_constraintTop_toTopOf="@id/gl_health_top"
+        app:layout_constraintBottom_toBottomOf="@id/heart_p2"
+        android:layout_marginRight="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
