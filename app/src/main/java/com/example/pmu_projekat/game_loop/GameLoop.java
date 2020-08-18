@@ -8,12 +8,12 @@ import com.example.pmu_projekat.views.BattleView;
 public class GameLoop extends Thread {
 
     private BattleView battleView;
-    private static final int MAX_FPS = 60;
-    private boolean running;
+    public static final int MAX_FPS = 80;
+    private static boolean running;
 
     public void setGameView(BattleView gv) {
         this.battleView = gv;
-        this.running = true;
+        running = true;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class GameLoop extends Thread {
         }
     }
 
-    public void stopLoop() {
-        this.running = false;
+    public static void stopLoop() {
+        running = false;
     }
 }

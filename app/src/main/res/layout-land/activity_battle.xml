@@ -62,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="120"
+        android:textSize="20dp"
         app:layout_constraintLeft_toRightOf="@id/heart_p1"
         app:layout_constraintTop_toTopOf="@id/gl_health_top"
         app:layout_constraintBottom_toBottomOf="@id/heart_p1"
@@ -72,9 +73,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="120"
+        android:textSize="20dp"
         app:layout_constraintRight_toLeftOf="@id/heart_p2"
         app:layout_constraintTop_toTopOf="@id/gl_health_top"
         app:layout_constraintBottom_toBottomOf="@id/heart_p2"
         android:layout_marginRight="20dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_buttons_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_attack_btn_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <ImageView
+        android:id="@+id/button_left_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/gl_buttons_top"
+        app:layout_constraintLeft_toLeftOf="@id/gl_health_left"/>
+
+    <ImageView
+        android:id="@+id/button_right_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/gl_buttons_top"
+        app:layout_constraintRight_toLeftOf="@id/gl_health_right"/>
+
+    <ImageView
+        android:id="@+id/button_attack_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/gl_buttons_top"
+        app:layout_constraintLeft_toLeftOf="@id/gl_attack_btn_left"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -53,18 +53,33 @@ public class ChassisWhale extends ChassisElement {
                 weapon.setX(x + 30);
                 weapon.setY(y - 10);
                 weapon.setFactor(1.3);
+
+                if (isReverse)
+                {
+                    weapon.setX(weapon.getX() - 45);
+                }
             }
             else if (weapon instanceof Rocket)
             {
                 weapon.setX(x + 25);
                 weapon.setY(y - 10);
                 weapon.setFactor(0.6);
+
+                if (isReverse)
+                {
+                    weapon.setX(weapon.getX() + 60);
+                }
             }
             else if (weapon instanceof Chainsaw)
             {
                 weapon.setX(x + 30);
                 weapon.setY(y - 10);
                 weapon.setFactor(1.3);
+
+                if (isReverse)
+                {
+                    weapon.setX(weapon.getX() - 45);
+                }
             }
 
             /*canvas.save();

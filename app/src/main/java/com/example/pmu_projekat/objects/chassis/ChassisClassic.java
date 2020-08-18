@@ -55,7 +55,11 @@ public class ChassisClassic extends ChassisElement {
             if (weapon instanceof Stinger || weapon instanceof Chainsaw)
             {
                 weapon.setFactor(1.5);
-                weapon.setX(weapon.getX() - 50);
+
+                if (isReverse)
+                {
+                    weapon.setX(weapon.getX() - 60);
+                }
             }
             else if (weapon instanceof Rocket)
             {
@@ -63,7 +67,7 @@ public class ChassisClassic extends ChassisElement {
 
                 if (isReverse)
                 {
-                    weapon.setX(weapon.getX() + 30);
+                    weapon.setX(weapon.getX() + 80);
                 }
             }
 
