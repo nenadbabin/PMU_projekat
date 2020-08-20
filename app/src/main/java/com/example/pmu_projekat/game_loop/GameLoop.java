@@ -9,7 +9,7 @@ public class GameLoop extends Thread {
 
     private BattleView battleView;
     public static final int MAX_FPS = 80;
-    private static boolean running;
+    private boolean running;
 
     public void setGameView(BattleView gv) {
         this.battleView = gv;
@@ -20,13 +20,20 @@ public class GameLoop extends Thread {
     public void run() {
         super.run();
         while (running) {
-            battleView.update();
-            battleView.invalidate();
+            synchronized (battleView)
+            {
+                battleView.update();
+                battleView.invalidate();
+            }
             SystemClock.sleep(1000 / MAX_FPS);
         }
     }
 
-    public static void stopLoop() {
-        running = false;
+    public void stopLoop() {
+        this.running = false;
+    }
+    public void interruptThread()
+    {
+        this.interrupt();
     }
 }

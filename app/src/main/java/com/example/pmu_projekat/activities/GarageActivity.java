@@ -78,16 +78,6 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
 
         this.carElementList = new ArrayList<>();
 
-        Button btnPlay = findViewById(R.id.btn_play);
-
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GarageActivity.this, BattleActivity.class);
-                startActivity(intent);
-            }
-        });
-
         appDatabase.userDao().getUserById(id).observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -176,67 +166,6 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         chest1IV = findViewById(R.id.chest_2_iv);
         chest2IV = findViewById(R.id.chest_3_iv);
 
-        chest0IV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (chestList.size() >= 1)
-                {
-                    if (chestList.get(0).isReady())
-                    {
-                        openBox(chestList.get(0), 0);
-                    }
-                    else
-                    {
-                        Toast.makeText(GarageActivity.this, "Wait! This chest is not ready yet.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-        chest1IV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (chestList.size() >= 2)
-                {
-                    if (chestList.get(1).isReady())
-                    {
-                        openBox(chestList.get(1), 1);
-                    }
-                    else
-                    {
-                        Toast.makeText(GarageActivity.this, "Wait! This chest is not ready yet.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-        chest2IV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (chestList.size() >= 3)
-                {
-                    if (chestList.get(2).isReady())
-                    {
-                        openBox(chestList.get(2), 1);
-                    }
-                    else
-                    {
-                        Toast.makeText(GarageActivity.this, "Wait! This chest is not ready yet.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-        final CustomView carView = findViewById(R.id.car_view);
-
-        carView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GarageActivity.this, CarEditActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     private boolean makeAGift(CarElement ce1)
@@ -306,6 +235,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
     protected void onPause() {
         super.onPause();
 
+        chestThread.interrupt();
         /*if (GarageActivity.this.user != null && GarageActivity.this.user.isMusic() == true) {
             Intent intent = new Intent(this, MyMusicPlayer.class);
             stopService(intent);
@@ -315,12 +245,15 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
     @Override
     protected void onStop() {
         super.onStop();
-        chestThread.interrupt();
 
-        if (GarageActivity.this.user != null && GarageActivity.this.user.isMusic() == true) {
+        /*if (GarageActivity.this.user != null && GarageActivity.this.user.isMusic() == true) {
             Intent intent = new Intent(this, MyMusicPlayer.class);
             stopService(intent);
-        }
+        }*/
+
+        Intent intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
+        intent.putExtra("action", MyMusicPlayer.PAUSE_TRACK);
+        startService(intent);
     }
 
     @Override
@@ -362,6 +295,90 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     chestUtility.setInterfacePosition(i);
                     chestList.add(chestUtility);
                 }
+
+                GarageActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final int chestListSize = chestList.size();
+                        ChestUtility cu1 = null, cu2 = null, cu3 = null;
+
+                        if (chestListSize >= 1)
+                        {
+                            cu1 = chestList.get(0);
+                        }
+                        if (chestListSize >= 2)
+                        {
+                            cu2 = chestList.get(1);
+                        }
+                        if (chestListSize >= 3)
+                        {
+                            cu3 = chestList.get(2);
+                        }
+
+                        final ChestUtility finalCu = cu1;
+                        chest0IV.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (chestListSize >= 1)
+                                {
+                                    if (finalCu.isOpened() == false)
+                                    {
+                                        if (finalCu.isReady())
+                                        {
+                                            openBox(finalCu, 0);
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(GarageActivity.this, "Wait! This chest is not ready yet.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+                        final ChestUtility finalCu1 = cu2;
+                        chest1IV.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (chestListSize >= 2)
+                                {
+                                    if (finalCu1.isOpened() == false)
+                                    {
+                                        if (finalCu1.isReady())
+                                        {
+                                            openBox(finalCu1, 1);
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(GarageActivity.this, "Wait! This chest is not ready yet.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+                        final ChestUtility finalCu2 = cu3;
+                        chest2IV.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (chestListSize >= 3)
+                                {
+                                    if (finalCu2.isOpened() == false)
+                                    {
+                                        if (finalCu2.isReady())
+                                        {
+                                            openBox(finalCu2, 2);
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(GarageActivity.this, "Wait! This chest is not ready yet.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
 
                 chestThread = new Thread(new Runnable() {
                     @Override
@@ -408,10 +425,6 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                                                 tv.setText(hours + ":" + minutes + ":" + seconds);
                                             }
                                         });
-
-                                        if (chest.isReady()) {
-
-                                        }
                                     }
                                 }
                             }
@@ -421,8 +434,6 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
 
                     }
                 });
-
-                chestThread.start();
 
                 {
                     GarageActivity.this.runOnUiThread(new Runnable() {
@@ -462,6 +473,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     });
                 }
 
+                chestThread.start();
             }
         }).start();
 
@@ -470,9 +482,35 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ChassisElement chassisElement = createCar(carView, GarageActivity.this.id, appDatabase);
+                final ChassisElement chassisElement = createCar(carView, GarageActivity.this.id, appDatabase);
                 carView.setCar(chassisElement);
                 carView.invalidate();
+
+                carView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(GarageActivity.this, CarEditActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                Button btnPlay = findViewById(R.id.btn_play);
+
+                btnPlay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (chassisElement != null)
+                        {
+                            Intent intent = new Intent(GarageActivity.this, BattleActivity.class);
+                            startActivity(intent);   
+                        }
+                        else
+                        {
+                            Toast.makeText(GarageActivity.this, "You have to use chassis at least in order to play", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                
             }
         }).start();
     }
@@ -631,6 +669,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                 makeAGift(finalCe);
                 appDatabase.chestDao().delete(chest.getDatabaseID());
                 chestList.remove(chest);
+                chest.setOpened(true);
             }
         }).start();
 

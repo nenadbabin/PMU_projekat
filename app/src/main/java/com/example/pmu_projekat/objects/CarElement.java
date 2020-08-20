@@ -39,16 +39,6 @@ public abstract class CarElement {
         positionStack = new Stack<>();
     }
 
-    public void moveX (int dx)
-    {
-        x += dx;
-    }
-
-    public void moveY (int dy)
-    {
-        y += dy;
-    }
-
     public int getX() {
         return x;
     }

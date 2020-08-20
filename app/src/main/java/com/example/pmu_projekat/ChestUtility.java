@@ -5,6 +5,7 @@ public class ChestUtility {
     private long databaseID;
     private long time;
     private int interfacePosition;
+    private boolean isOpened = false;
 
     public long getTime() {
         return time;
@@ -35,4 +36,11 @@ public class ChestUtility {
         this.interfacePosition = interfacePosition;
     }
 
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public void setOpened(boolean opened) {
+        isOpened = opened;
+    }
 }

@@ -17,7 +17,13 @@ import android.widget.TextView;
 import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.database.AppDatabase;
+import com.example.pmu_projekat.database.entities.Chassis;
 import com.example.pmu_projekat.database.entities.User;
+import com.example.pmu_projekat.database.entities.WarehouseChassis;
+import com.example.pmu_projekat.database.entities.WarehouseWeapon;
+import com.example.pmu_projekat.database.entities.WarehouseWheel;
+import com.example.pmu_projekat.database.entities.Weapon;
+import com.example.pmu_projekat.database.entities.Wheel;
 import com.example.pmu_projekat.shared_preferences.MySharedPreferences;
 
 import java.util.ArrayList;
@@ -118,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
 
+                            // ovo 1 je fiksno, ali moze da se napravi da bude kompleksniji odabir
+                            Chassis chassis = appdatabase.carElementsDao().getChassis(1);
+                            Weapon weapon = appdatabase.carElementsDao().getWeapon(1);
+                            Wheel wheel = appdatabase.carElementsDao().getWheel(1);
+
                             if (ok)
                             {
                                 final String username = usernameET.getText().toString();
@@ -128,7 +139,17 @@ public class MainActivity extends AppCompatActivity {
                                         usernameET.setText("");
                                     }
                                 });
-                                appdatabase.userDao().insert(new User(username));
+
+                                long insert = appdatabase.userDao().insert(new User(username));
+
+                                WarehouseChassis warehouseChassis = new WarehouseChassis(insert, chassis.getId(), false);
+                                appdatabase.warehouseDao().insert(warehouseChassis);
+
+                                WarehouseWeapon warehouseWeapon = new WarehouseWeapon(insert, weapon.getId(), false);
+                                appdatabase.warehouseDao().insert(warehouseWeapon);
+
+                                WarehouseWheel warehouseWheel = new WarehouseWheel(insert, wheel.getId(), false);
+                                appdatabase.warehouseDao().insert(warehouseWheel);
                             }
                             else
                             {

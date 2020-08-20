@@ -30,4 +30,7 @@ public interface UserDAO {
 
     @Query("UPDATE User SET music = :music, user_control = :userControl WHERE id = :id")
     void updateUserPreferences (int id, boolean music, boolean userControl);
+
+    @Update
+    void updateUser (User user);
 }

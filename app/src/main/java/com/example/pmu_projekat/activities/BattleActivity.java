@@ -14,6 +14,7 @@ import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.database.AppDatabase;
 import com.example.pmu_projekat.database.entities.Chassis;
+import com.example.pmu_projekat.database.entities.Chest;
 import com.example.pmu_projekat.database.entities.User;
 import com.example.pmu_projekat.database.entities.Weapon;
 import com.example.pmu_projekat.database.entities.Wheel;
@@ -31,7 +32,10 @@ import com.example.pmu_projekat.objects.wheel.Scooter;
 import com.example.pmu_projekat.shared_preferences.MySharedPreferences;
 import com.example.pmu_projekat.views.BattleView;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class BattleActivity extends AppCompatActivity {
 
@@ -142,7 +146,47 @@ public class BattleActivity extends AppCompatActivity {
                     });
                 }
 
-                Chainsaw chainsaw = new Chainsaw(BattleActivity.this.battleView.getContext(), 0,0);
+                // create car for P2
+                List<Chassis> allChassis = BattleActivity.this.appDatabase.carElementsDao().getAllChassis();
+                Collections.shuffle(allChassis);
+
+                int randomNumber = getRandomNumber(0, allChassis.size());
+                final ChassisElement chassisOpponent = CarEditActivity.createChassis(BattleActivity.this.battleView.getContext(), allChassis.get(randomNumber));
+                chassisOpponent.setHealth(allChassis.get(randomNumber).getHealth());
+                chassisOpponent.setEnergy(allChassis.get(randomNumber).getEnergy());
+                chassisOpponent.setReverse(true);
+
+                List<Weapon> allWeapons = BattleActivity.this.appDatabase.carElementsDao().getAllWeapons();
+                Collections.shuffle(allWeapons);
+                randomNumber = getRandomNumber(-1, allWeapons.size());
+
+                if (randomNumber != -1)
+                {
+                    CarElement weaponOpponent = CarEditActivity.createWeapon(BattleActivity.this.battleView.getContext(), allWeapons.get(randomNumber));
+                    weaponOpponent.setReverse(true);
+                    weaponOpponent.setPower(allWeapons.get(randomNumber).getPower());
+                    weaponOpponent.setEnergy(allWeapons.get(randomNumber).getEnergy());
+                    weaponOpponent.setHealth(allWeapons.get(randomNumber).getHealth());
+                    chassisOpponent.setWeapon(weaponOpponent);
+                }
+
+                List<Wheel> allWheels = BattleActivity.this.appDatabase.carElementsDao().getAllWheels();
+                Collections.shuffle(allWheels);
+                randomNumber = getRandomNumber(-1, allWheels.size());
+
+                if (randomNumber != -1)
+                {
+                    CarElement wheelLeftOpponent = CarEditActivity.createWheel(BattleActivity.this.battleView.getContext(), allWheels.get(randomNumber));
+                    wheelLeftOpponent.setReverse(true);
+                    wheelLeftOpponent.setHealth(allWheels.get(randomNumber).getHealth());
+                    chassisOpponent.setWheelLeft(wheelLeftOpponent);
+                    CarElement wheelRightOpponent = CarEditActivity.createWheel(BattleActivity.this.battleView.getContext(), allWheels.get(randomNumber));
+                    wheelRightOpponent.setReverse(true);
+                    wheelRightOpponent.setHealth(allWheels.get(randomNumber).getHealth());
+                    chassisOpponent.setWheelRight(wheelRightOpponent);
+                }
+
+                /*Chainsaw chainsaw = new Chainsaw(BattleActivity.this.battleView.getContext(), 0,0);
                 chainsaw.setHealth(5);
                 chainsaw.setEnergy(5);
                 chainsaw.setPower(10);
@@ -152,28 +196,29 @@ public class BattleActivity extends AppCompatActivity {
                 Scooter knobR = new Scooter(BattleActivity.this.battleView.getContext(), 0,0);
                 knobR.setHealth(10);
 
-                final ChassisWhale chassisWhale = new ChassisWhale(BattleActivity.this.battleView.getContext(), 0, 0);
+                final ChassisClassic chassisWhale = new ChassisClassic(BattleActivity.this.battleView.getContext(), 0, 0);
                 chassisWhale.setHealth(80);
-                chassisWhale.setEnergy(5);
+                chassisWhale.setEnergy(6);
                 chassisWhale.setReverse(true);
                 chassisWhale.setWeapon(chainsaw);
                 chassisWhale.setWheelLeft(knobL);
-                chassisWhale.setWheelRight(knobR);
+                chassisWhale.setWheelRight(knobR);*/
 
-                BattleActivity.this.battleView.setCarP2(chassisWhale);
+                BattleActivity.this.battleView.setCarP2(chassisOpponent);
                 BattleActivity.this.battleView.setP1Health(BattleActivity.this.car.getCarHealth());
-                BattleActivity.this.battleView.setP2Health(chassisWhale.getCarHealth());
+                BattleActivity.this.battleView.setP2Health(chassisOpponent.getCarHealth());
 
                 BattleActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         p1HealthTV.setText("" + BattleActivity.this.car.getCarHealth());
-                        p2HealthTV.setText("" + chassisWhale.getCarHealth());
+                        p2HealthTV.setText("" + chassisOpponent.getCarHealth());
                     }
                 });
 
                 BattleActivity.this.gameLoop = new GameLoop();
                 BattleActivity.this.gameLoop.setGameView(BattleActivity.this.battleView);
+                BattleActivity.this.battleView.setGameLoop(gameLoop);
                 gameLoop.start();
             }
         }).start();
@@ -207,6 +252,65 @@ public class BattleActivity extends AppCompatActivity {
                 Toast.makeText(BattleActivity.this, text, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void p1Win()
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = appDatabase.userDao().getUserByIdNLD(BattleActivity.this.id);
+                user.setNumberOfWins(user.getNumberOfWins() + 1);
+                user.setNumberOfBattles(user.getNumberOfBattles() + 1);
+
+                if (user.getNumberOfWins() % 3 == 0)
+                {
+                    List<Chest> chestList = appDatabase.chestDao().getChestsForUsername(BattleActivity.this.id);
+                    int chestNumber = 0;
+
+                    if (chestList != null)
+                    {
+                        chestNumber = chestList.size();
+                    }
+
+                    if (chestNumber < 3)
+                    {
+                        Chest chest = new Chest();
+                        chest.setIdUser(BattleActivity.this.id);
+                        Date d = new Date();
+                        long millis = d.getTime();
+                        millis += 600000; // 10min
+                        chest.setTimeToOpen(millis);
+                        appDatabase.chestDao().insert(chest);
+                    }
+                }
+
+                appDatabase.userDao().updateUser(user);
+            }
+        }).start();
+    }
+
+    public void p2Win()
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = appDatabase.userDao().getUserByIdNLD(BattleActivity.this.id);
+                user.setNumberOfBattles(user.getNumberOfBattles() + 1);
+                appDatabase.userDao().updateUser(user);
+            }
+        }).start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        gameLoop.interruptThread();
+    }
+
+    private static int getRandomNumber (int min, int max)
+    {
+        return (int) ((Math.random() * (max - min)) + min);
     }
 
 }

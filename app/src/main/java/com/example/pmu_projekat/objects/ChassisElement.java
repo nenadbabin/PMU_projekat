@@ -11,7 +11,6 @@ public abstract class ChassisElement extends CarElement {
     protected CarElement weapon = null;
     protected CarElement wheelLeft = null;
     protected CarElement wheelRight = null;
-    protected double factor = 1.5;
 
     protected int weaponCenterX;
     protected int weaponCenterY;
@@ -66,6 +65,7 @@ public abstract class ChassisElement extends CarElement {
 
     public ChassisElement(Context context, int x, int y) {
         super(context, x, y);
+        factor = 1.5;
     }
 
     public CarElement getWeapon() {

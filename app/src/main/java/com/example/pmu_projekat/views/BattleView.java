@@ -50,9 +50,9 @@ public class BattleView extends View {
 
     private Drawable wallLeft;
     private Drawable wallRight;
-    private int wallLeftX = -800;
+    private int wallLeftX = -800 - 20;
     private int wallLeftY = 350;
-    private int wallRightX = Constants.SCREEN_WIDTH;
+    private int wallRightX = Constants.SCREEN_WIDTH + 20;
     private int wallRightY = 350;
     private static int WALL_HEIGHT_WIDTH = 800;
 
@@ -64,8 +64,11 @@ public class BattleView extends View {
     private int contactWithWallTimeP1 = 0;
     private int contactWithWallTimeP2 = 0;
     private static final int WALL_DAMAGE = 40;
+    private static final int WALL_START_TIME_SEC = 15;
 
     private int p1Health, p2Health;
+
+    private GameLoop gameLoop;
 
     public BattleView(Context context) {
         super(context);
@@ -163,12 +166,12 @@ public class BattleView extends View {
     {
         if (isYCalculated)
         {
-            if (wallCounter < GameLoop.MAX_FPS * 10)
+            if (wallCounter < GameLoop.MAX_FPS * WALL_START_TIME_SEC)
             {
                 wallCounter++;
             }
 
-            if ((wallCounter >= GameLoop.MAX_FPS * 5) && moveWalls == false)
+            if ((wallCounter >= GameLoop.MAX_FPS * WALL_START_TIME_SEC) && moveWalls == false)
             {
                 moveWalls = true;
             }
@@ -206,28 +209,40 @@ public class BattleView extends View {
             {
                 if (!userControl)
                 {
-                    carP1.setX(carP1.getX() + 2);
+                    if (carP1.getWheelLeft() != null && carP1.getWheelRight() != null) // mora da ima tockove da bi se kretao
+                    {
+                        carP1.setX(carP1.getX() + 2);
+                    }
                 }
                 else
+                {
+                    if (carP1.getWheelLeft() != null && carP1.getWheelRight() != null)
+                    {
+                        if (moveLeft && canMoveP1Left())
+                        {
+                            carP1.setX(carP1.getX() - 2);
+                        }
+
+                        if (moveRight)
+                        {
+                            carP1.setX(carP1.getX() + 2);
+                        }
+                    }
+                }
+
+                if (carP2.getWheelLeft() != null && carP2.getWheelRight() != null)
+                {
+                    carP2.setX(carP2.getX() - 2);
+                }
+            }
+            else
+            {
+                if (carP1.getWheelLeft() != null && carP1.getWheelRight() != null)
                 {
                     if (moveLeft && canMoveP1Left())
                     {
                         carP1.setX(carP1.getX() - 2);
                     }
-
-                    if (moveRight)
-                    {
-                        carP1.setX(carP1.getX() + 2);
-                    }
-                }
-
-                carP2.setX(carP2.getX() - 2);
-            }
-            else
-            {
-                if (moveLeft && canMoveP1Left())
-                {
-                    carP1.setX(carP1.getX() - 2);
                 }
 
                 /*if (moveRight)
@@ -235,14 +250,14 @@ public class BattleView extends View {
                     carP1.setX(carP1.getX() + 2);
                 }*/
 
-                if ((!userControl && carP1.getEnergy() > carP2.getEnergy() && canMoveP2Right()) || (userControl && moveRight && carP1.getEnergy() > carP2.getEnergy() && canMoveP2Right()))
+                if ((!userControl && carP1.getEnergy() > carP2.getEnergy() && canMoveP2Right() && canMoveP2Right() && carP1.getWheelLeft() != null && carP1.getWheelRight() != null) || (userControl && moveRight && carP1.getEnergy() > carP2.getEnergy() && canMoveP2Right() && carP1.getWheelLeft() != null && carP1.getWheelRight() != null))
                 {
                     int step = /*(carP1.getEnergy() - carP2.getEnergy()) / 2*/ 1;
                     carP1.setX(carP1.getX() + step);
                     carP2.setX(carP2.getX() + step);
                 }
 
-                if (carP1.getEnergy() < carP2.getEnergy() && canMoveP1Left())
+                if (carP1.getEnergy() < carP2.getEnergy() && canMoveP1Left() && carP2.getWheelLeft() != null && carP2.getWheelRight() != null)
                 {
                     int step = /*(carP2.getEnergy() - carP1.getEnergy()) / 2*/ 1;
                     carP1.setX(carP1.getX() - step);
@@ -381,14 +396,16 @@ public class BattleView extends View {
 
             if (p1Health == 0)
             {
-                GameLoop.stopLoop();
+                gameLoop.stopLoop();
                 battleActivity.toast("Opponent won the battle!");
+                battleActivity.p2Win();
             }
 
             if (p2Health == 0)
             {
-                GameLoop.stopLoop();
+                gameLoop.stopLoop();
                 battleActivity.toast("User won the battle!");
+                battleActivity.p1Win();
             }
         }
     }
@@ -602,20 +619,29 @@ public class BattleView extends View {
 
     public void setY()
     {
+        /*Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "set Y: " + carP1.getY() + " " + carP1.getHeight());
+        Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "set Y: " + carP2.getY() + " " + carP2.getHeight());
+        Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "set Y: " + bottomLine + " " + carP1.getBoundBottom() + " " + carP1.getBoundTop());
+        Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "set Y: " + bottomLine + " " + carP2.getBoundBottom() + " " + carP2.getBoundTop());*/
+
         if (carP1 != null)
         {
-            carP1.setY(bottomLine - (carP1.getBoundBottom() - carP1.getBoundTop()));
             if (carP1.getBoundBottom() != 0)
             {
+                carP1.setY(bottomLine - (carP1.getBoundBottom() - carP1.getBoundTop()));
                 isYCalculated = true;
             }
-            //Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "c1: " + carP1.getBoundTop() + " " + carP1.getBoundBottom());
+            //Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "set Y: " + carP1.getY());
         }
 
         if (carP2 != null)
         {
-            carP2.setY(bottomLine - (carP2.getBoundBottom() - carP2.getBoundTop()));
-            //Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "c2: " + carP2.getBoundTop() + " " + carP2.getBoundBottom());
+            if (carP2.getBoundBottom() != 0)
+            {
+                carP2.setY(bottomLine - (carP2.getBoundBottom() - carP2.getBoundTop()));
+                isYCalculated = true;
+            }
+            //Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "set Y: " + carP2.getY());
         }
 
         //Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "bottom line: " + bottomLine);
@@ -667,5 +693,9 @@ public class BattleView extends View {
 
     public void setP2Health(int p2Health) {
         this.p2Health = p2Health;
+    }
+
+    public void setGameLoop(GameLoop gameLoop) {
+        this.gameLoop = gameLoop;
     }
 }

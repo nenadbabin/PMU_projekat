@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.example.pmu_projekat.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -39,13 +40,14 @@ public class MyMusicPlayer extends Service {
         super.onCreate();
 
         currentPosition = 0;
-        isShuffle = false;
-        currentSong = R.raw.wotwpotp;
+        isShuffle = true;
         isRepeat = 2;
 
         songList = new ArrayList<>();
         songList.add(R.raw.wotwpotp);
         songList.add(R.raw.winaf);
+
+
     }
 
     @Override
@@ -55,6 +57,8 @@ public class MyMusicPlayer extends Service {
 
         switch (action) {
             case PLAY_TRACK: {
+                Collections.shuffle(songList);
+                currentSong = songList.get(0);
                 createPlayer();
                 mediaPlayer.start();
                 break;
