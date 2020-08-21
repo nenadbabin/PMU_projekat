@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                                 {
                                     MySharedPreferences.save(MainActivity.this, Constants.USERNAME_STRING, users.get(i).getUsername());
                                     MySharedPreferences.save(MainActivity.this, Constants.ID_STRING, (int) users.get(i).getId());
-                                    Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "" + MySharedPreferences.getInt(MainActivity.this, Constants.ID_STRING));
-                                    Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "" + MySharedPreferences.getString(MainActivity.this, Constants.USERNAME_STRING));
+                                    //Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "" + MySharedPreferences.getInt(MainActivity.this, Constants.ID_STRING));
+                                    //Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "" + MySharedPreferences.getString(MainActivity.this, Constants.USERNAME_STRING));
                                     Intent intent = new Intent(MainActivity.this, GarageActivity.class);
                                     startActivity(intent);
                                     break;

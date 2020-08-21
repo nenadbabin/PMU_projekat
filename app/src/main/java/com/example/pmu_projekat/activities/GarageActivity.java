@@ -34,6 +34,7 @@ import com.example.pmu_projekat.objects.ChassisElement;
 import com.example.pmu_projekat.objects.chassis.ChassisBoulder;
 import com.example.pmu_projekat.objects.chassis.ChassisClassic;
 import com.example.pmu_projekat.objects.chassis.ChassisWhale;
+import com.example.pmu_projekat.objects.weapon.Blade;
 import com.example.pmu_projekat.objects.weapon.Chainsaw;
 import com.example.pmu_projekat.objects.weapon.Rocket;
 import com.example.pmu_projekat.objects.weapon.Stinger;
@@ -66,6 +67,8 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
     private ImageView chest1IV;
     private ImageView chest2IV;
 
+    private CustomView carView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +80,8 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         this.username = MySharedPreferences.getString(this, Constants.USERNAME_STRING);
 
         this.carElementList = new ArrayList<>();
+
+        this.carView = findViewById(R.id.car_view);
 
         appDatabase.userDao().getUserById(id).observe(this, new Observer<User>() {
             @Override
@@ -103,16 +108,37 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     }
                 });
 
-                if (GarageActivity.this.user.isMusic() == true)
+                if (GarageActivity.this.user.isMusic() == true && MyMusicPlayer.getTokens() == 0)
                 {
                     Intent intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
                     intent.putExtra("action", MyMusicPlayer.STOP_TRACK);
                     startService(intent);
 
                     intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
+                    intent.putExtra("action", MyMusicPlayer.RESET_PLAYER);
+                    startService(intent);
+
+                    intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
                     intent.putExtra("action", MyMusicPlayer.PLAY_TRACK);
                     startService(intent);
+
+                    MyMusicPlayer.setTokens(2);
+
+                    Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "GA : callback " + MyMusicPlayer.getTokens());
                 }
+
+                carView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(GarageActivity.this, CarEditActivity.class);
+                        /*intent.putExtra("music", GarageActivity.this.user.isMusic());
+                        Constants.returned = false;*/
+                        MyMusicPlayer.addToken();
+                        startActivity(intent);
+
+                        Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "GA : -> CAE " + MyMusicPlayer.getTokens());
+                    }
+                });
 
                 int number_of_wins = GarageActivity.this.user.getNumberOfWins();
                 ProgressBar progressBar = findViewById(R.id.progressBar);
@@ -240,36 +266,43 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
             Intent intent = new Intent(this, MyMusicPlayer.class);
             stopService(intent);
         }*/
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+        MyMusicPlayer.removeToken();
 
-        /*if (GarageActivity.this.user != null && GarageActivity.this.user.isMusic() == true) {
+        if (MyMusicPlayer.getTokens() == 1)
+        {
+            /*Intent intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
+            intent.putExtra("action", MyMusicPlayer.STOP_TRACK);
+            startService(intent);*/
             Intent intent = new Intent(this, MyMusicPlayer.class);
             stopService(intent);
-        }*/
+        }
 
-        Intent intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
-        intent.putExtra("action", MyMusicPlayer.PAUSE_TRACK);
-        startService(intent);
+        Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "GA : onPause() " + MyMusicPlayer.getTokens());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (GarageActivity.this.user != null && GarageActivity.this.user.isMusic() == true)
+        if (MyMusicPlayer.getTokens() == 1)
         {
             Intent intent = new Intent(this, MyMusicPlayer.class);
             intent.putExtra("action", MyMusicPlayer.STOP_TRACK);
             startService(intent);
 
+            intent = new Intent(this, MyMusicPlayer.class);
+            intent.putExtra("action", MyMusicPlayer.RESET_PLAYER);
+            startService(intent);
+
             intent = new Intent(GarageActivity.this, MyMusicPlayer.class);
             intent.putExtra("action", MyMusicPlayer.PLAY_TRACK);
             startService(intent);
+
+            MyMusicPlayer.addToken();
         }
+
+        Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "GA : onResume() " + MyMusicPlayer.getTokens());
 
         // dohvatanje svih kovcega
         new Thread(new Runnable() {
@@ -477,22 +510,12 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
             }
         }).start();
 
-        final CustomView carView = findViewById(R.id.car_view);
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final ChassisElement chassisElement = createCar(carView, GarageActivity.this.id, appDatabase);
                 carView.setCar(chassisElement);
                 carView.invalidate();
-
-                carView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(GarageActivity.this, CarEditActivity.class);
-                        startActivity(intent);
-                    }
-                });
 
                 Button btnPlay = findViewById(R.id.btn_play);
 
@@ -528,14 +551,21 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
             startService(intent);
 
             intent = new Intent(this, MyMusicPlayer.class);
+            intent.putExtra("action", MyMusicPlayer.RESET_PLAYER);
+            startService(intent);
+
+            intent = new Intent(this, MyMusicPlayer.class);
             intent.putExtra("action", MyMusicPlayer.PLAY_TRACK);
             startService(intent);
+
+            MyMusicPlayer.setTokens(2);
         }
         else
         {
             Intent intent = new Intent(this, MyMusicPlayer.class);
             intent.putExtra("action", MyMusicPlayer.STOP_TRACK);
             startService(intent);
+            MyMusicPlayer.setTokens(0);
         }
 
         new Thread(new Runnable() {
@@ -591,6 +621,10 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     }
                     case "rocket": {
                         weaponElement = new Rocket(carView.getContext(), 0, 0);
+                        break;
+                    }
+                    case "blade": {
+                        weaponElement = new Blade(carView.getContext(), 0, 0);
                         break;
                     }
                 }
@@ -708,6 +742,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
             case Constants.WPN_CHAINSAW: return "Chainsaw";
             case Constants.WPN_ROCKET: return "Rocket";
             case Constants.WPN_STINGER: return "Stinger";
+            case Constants.WPN_BLADE: return "Blade";
             case Constants.WHL_KNOB: return "Wheel Knob";
             case Constants.WHL_SCOOTER: return "Wheel Scooter";
             case Constants.WHL_TYRE: return "Wheel Tyre";

@@ -22,12 +22,15 @@ public class MyMusicPlayer extends Service {
     public static final String PLAY_TRACK = "PLAY";
     public static final String PAUSE_TRACK = "PAUSE";
     public static final String STOP_TRACK = "STOP";
+    public static final String RESET_PLAYER = "RESET_PLAYER";
 
     private int currentPosition;
     private boolean isShuffle;
     private List<Integer> songList;
     private int currentSong;
     private int isRepeat;
+
+    private static int tokens = 0;
 
     @Nullable
     @Override
@@ -56,10 +59,13 @@ public class MyMusicPlayer extends Service {
         String action = intent.getStringExtra("action");
 
         switch (action) {
-            case PLAY_TRACK: {
+            case RESET_PLAYER : {
                 Collections.shuffle(songList);
                 currentSong = songList.get(0);
                 createPlayer();
+                break;
+            }
+            case PLAY_TRACK: {
                 mediaPlayer.start();
                 break;
             }
@@ -160,5 +166,26 @@ public class MyMusicPlayer extends Service {
                 endOfTheSong();
             }
         });
+    }
+
+    public static int getTokens() {
+        return tokens;
+    }
+
+    public static void setTokens(int tokens) {
+        MyMusicPlayer.tokens = tokens;
+    }
+
+    public static void addToken()
+    {
+        tokens++;
+    }
+
+    public static void removeToken()
+    {
+        if (tokens > 0)
+        {
+            tokens--;
+        }
     }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Guideline;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +24,13 @@ import com.example.pmu_projekat.database.entities.WarehouseWeapon;
 import com.example.pmu_projekat.database.entities.WarehouseWheel;
 import com.example.pmu_projekat.database.entities.Weapon;
 import com.example.pmu_projekat.database.entities.Wheel;
+import com.example.pmu_projekat.media_player.MyMusicPlayer;
 import com.example.pmu_projekat.objects.CarElement;
 import com.example.pmu_projekat.objects.ChassisElement;
 import com.example.pmu_projekat.objects.chassis.ChassisBoulder;
 import com.example.pmu_projekat.objects.chassis.ChassisClassic;
 import com.example.pmu_projekat.objects.chassis.ChassisWhale;
+import com.example.pmu_projekat.objects.weapon.Blade;
 import com.example.pmu_projekat.objects.weapon.Chainsaw;
 import com.example.pmu_projekat.objects.weapon.Rocket;
 import com.example.pmu_projekat.objects.weapon.Stinger;
@@ -63,6 +66,8 @@ public class CarEditActivity extends AppCompatActivity {
     private int frameY0;
     private int frameY1;
 
+    private boolean music;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +99,16 @@ public class CarEditActivity extends AppCompatActivity {
         componentPowerTV.setText("0");
         componentHealthTV.setText("0");
         componentEnergyTV.setText("0");
+
+        /*Intent intent = getIntent();
+        music = intent.getBooleanExtra("music", false);*/
+
+        /*if (MyMusicPlayer.getTokens() == 1)
+        {
+            Intent myIntent = new Intent(CarEditActivity.this, MyMusicPlayer.class);
+            myIntent.putExtra("action", MyMusicPlayer.PLAY_TRACK);
+            startService(myIntent);
+        }*/
 
         Button saveButton = findViewById(R.id.btn_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -415,6 +430,10 @@ public class CarEditActivity extends AppCompatActivity {
                 weaponElement = new Rocket(context, 0, 0);
                 break;
             }
+            case "blade": {
+                weaponElement = new Blade(context, 0, 0);
+                break;
+            }
         }
 
         return weaponElement;
@@ -632,6 +651,10 @@ public class CarEditActivity extends AppCompatActivity {
                     ce = new Stinger(carEditView.getContext(), 0,0);
                     break;
                 }
+                case Constants.WPN_BLADE : {
+                    ce = new Blade(carEditView.getContext(), 0,0);
+                    break;
+                }
             }
             ce.setDatabaseID(carElement.getDatabaseID());
             ce.setPower(carElement.getPower());
@@ -801,4 +824,57 @@ public class CarEditActivity extends AppCompatActivity {
         componentEnergyTV.setText("" + carElement.getEnergy());
         componentHealthTV.setText("" + carElement.getHealth());
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (MyMusicPlayer.getTokens() == 1)
+        {
+            Intent intent = new Intent(this, MyMusicPlayer.class);
+            intent.putExtra("action", MyMusicPlayer.STOP_TRACK);
+            startService(intent);
+
+            intent = new Intent(this, MyMusicPlayer.class);
+            intent.putExtra("action", MyMusicPlayer.RESET_PLAYER);
+            startService(intent);
+
+            intent = new Intent(CarEditActivity.this, MyMusicPlayer.class);
+            intent.putExtra("action", MyMusicPlayer.PLAY_TRACK);
+            startService(intent);
+
+            MyMusicPlayer.addToken();
+        }
+
+        Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "CAE : onResume() " + MyMusicPlayer.getTokens());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MyMusicPlayer.removeToken();
+
+        if (MyMusicPlayer.getTokens() == 1)
+        {
+            Intent intent = new Intent(this, MyMusicPlayer.class);
+            stopService(intent);
+        }
+
+        Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "CAE : onPause() " + MyMusicPlayer.getTokens());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (MyMusicPlayer.getTokens() > 0)
+        {
+            MyMusicPlayer.addToken();
+        }
+
+        Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "CAE : onBackPressed() " + MyMusicPlayer.getTokens());
+
+        finish();
+    }
+
+
 }

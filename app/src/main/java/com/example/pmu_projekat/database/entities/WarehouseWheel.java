@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey;
                 @Index("id_wheel"),
         },
         foreignKeys = {
-                @ForeignKey(entity = Chassis.class,
+                @ForeignKey(entity = Wheel.class,
                         parentColumns = "id",
                         childColumns = "id_wheel"),
                 @ForeignKey(entity = User.class,

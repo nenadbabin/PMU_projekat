@@ -13,13 +13,12 @@ public class GameLoop extends Thread {
 
     public void setGameView(BattleView gv) {
         this.battleView = gv;
-        running = true;
     }
 
     @Override
     public void run() {
         super.run();
-        while (running) {
+        while (running && !isInterrupted()) {
             synchronized (battleView)
             {
                 battleView.update();
@@ -29,9 +28,10 @@ public class GameLoop extends Thread {
         }
     }
 
-    public void stopLoop() {
-        this.running = false;
+    public void setRunning(boolean running) {
+        this.running = running;
     }
+
     public void interruptThread()
     {
         this.interrupt();

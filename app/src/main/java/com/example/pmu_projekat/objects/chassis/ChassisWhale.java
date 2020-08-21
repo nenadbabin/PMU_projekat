@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.objects.ChassisElement;
+import com.example.pmu_projekat.objects.weapon.Blade;
 import com.example.pmu_projekat.objects.weapon.Chainsaw;
 import com.example.pmu_projekat.objects.weapon.Rocket;
 import com.example.pmu_projekat.objects.weapon.Stinger;
@@ -81,11 +82,18 @@ public class ChassisWhale extends ChassisElement {
                     weapon.setX(weapon.getX() - 45);
                 }
             }
+            else if (weapon instanceof Blade)
+            {
+                weapon.setFactor(0.8);
+                weapon.setX(x + 45);
+                weapon.setY(y - 20);
 
-            /*canvas.save();
-            canvas.rotate(0, x, y + 10);
-            weapon.draw(canvas);
-            canvas.restore();*/
+                if (isReverse)
+                {
+                    weapon.setX(weapon.getX() - 70);
+                }
+            }
+
             weapon.draw(canvas);
         }
 

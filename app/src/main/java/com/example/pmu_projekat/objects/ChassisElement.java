@@ -97,13 +97,13 @@ public abstract class ChassisElement extends CarElement {
         //Calculating left margin
         int tmp = x;
 
-        if (weapon != null)
+        /*if (weapon != null)
         {
             if (weapon.getX() < tmp)
             {
                 tmp = weapon.getX();
             }
-        }
+        }*/
 
         if (wheelLeft != null)
         {
@@ -126,13 +126,13 @@ public abstract class ChassisElement extends CarElement {
         // Calculating top margin
         tmp = y;
 
-        if (weapon != null)
+        /*if (weapon != null)
         {
             if (weapon.getY() < tmp)
             {
                 tmp = weapon.getY();
             }
-        }
+        }*/
 
         if (wheelLeft != null)
         {
@@ -155,13 +155,13 @@ public abstract class ChassisElement extends CarElement {
         // Calculating right margin
         tmp = x + getWidth();
 
-        if (weapon != null)
+        /*if (weapon != null)
         {
             if (weapon.getX() + weapon.getWidth() > tmp)
             {
                 tmp = weapon.getX() + weapon.getWidth();
             }
-        }
+        }*/
 
         if (wheelLeft != null)
         {
@@ -184,13 +184,13 @@ public abstract class ChassisElement extends CarElement {
         // Calculating bottom margin
         tmp = y + getHeight();
 
-        if (weapon != null)
+        /*if (weapon != null)
         {
             if (weapon.getY() + weapon.getHeight() > tmp)
             {
                 tmp = weapon.getY() + weapon.getHeight();
             }
-        }
+        }*/
 
         if (wheelLeft != null)
         {

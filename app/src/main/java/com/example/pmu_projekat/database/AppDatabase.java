@@ -29,7 +29,7 @@ import java.util.Date;
 @Database(entities = {Chassis.class, User.class, WarehouseChassis.class,
                       WarehouseWeapon.class, WarehouseWheel.class, Weapon.class,
                       Wheel.class, Chest.class},
-          version = 6,
+          version = 7,
           exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -95,14 +95,14 @@ public abstract class AppDatabase extends RoomDatabase {
             chest.setTimeToOpen(milis);
             chestDAO.insert(chest);
 
-            Log.d(Constants.APP_DATABASE_DEBUG_TAG, "insert " + insert);
-
             Weapon stinger = new Weapon("stringer", 5, 5, 10);
             long stringerID = carElementsDAO.insert(stinger);
             Weapon chainsaw = new Weapon("chainsaw", 10, 6, 15);
             long chainsawID = carElementsDAO.insert(chainsaw);
             Weapon rocket = new Weapon("rocket", 15, 8, 20);
             long rocketID = carElementsDAO.insert(rocket);
+            Weapon blade = new Weapon("blade", 12, 6, 18);
+            long bladeID = carElementsDAO.insert(blade);
 
             Chassis classic = new Chassis("classic", 80, 6);
             long classicID = carElementsDAO.insert(classic);
@@ -122,10 +122,14 @@ public abstract class AppDatabase extends RoomDatabase {
             warehouseDAO.insert(wc1);
             WarehouseChassis wc2 = new WarehouseChassis(userID, boulderID, true);
             warehouseDAO.insert(wc2);
+
             WarehouseWeapon wwe1 = new WarehouseWeapon(userID, stringerID, false);
             warehouseDAO.insert(wwe1);
             WarehouseWeapon wwe2 = new WarehouseWeapon(userID, rocketID, true);
             warehouseDAO.insert(wwe2);
+            WarehouseWeapon wwe3 = new WarehouseWeapon(userID, bladeID, false);
+            warehouseDAO.insert(wwe3);
+
             WarehouseWheel wwh1 = new WarehouseWheel(userID, knobID, false);
             warehouseDAO.insert(wwh1);
             WarehouseWheel wwh2 = new WarehouseWheel(userID, tyreID, true);

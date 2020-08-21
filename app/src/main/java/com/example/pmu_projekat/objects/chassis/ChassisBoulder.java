@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.objects.ChassisElement;
+import com.example.pmu_projekat.objects.weapon.Blade;
 import com.example.pmu_projekat.objects.weapon.Chainsaw;
 import com.example.pmu_projekat.objects.weapon.Rocket;
 import com.example.pmu_projekat.objects.weapon.Stinger;
@@ -55,6 +56,8 @@ public class ChassisBoulder extends ChassisElement {
             if (weapon instanceof Stinger)
             {
                 weapon.setFactor(1.3);
+                weapon.setX(weapon.getX() - weapon.getWidth() / 4);
+                weapon.setY(weapon.getY() - weapon.getHeight() / 2);
 
                 if (isReverse)
                 {
@@ -63,8 +66,9 @@ public class ChassisBoulder extends ChassisElement {
             }
             else if (weapon instanceof Rocket)
             {
-                weapon.setY(y + getHeight() / 2 - 20);
                 weapon.setFactor(0.6);
+                weapon.setX(weapon.getX() - weapon.getWidth() / 2);
+                weapon.setY(weapon.getY() - weapon.getHeight() / 2);
 
                 if (isReverse)
                 {
@@ -74,17 +78,26 @@ public class ChassisBoulder extends ChassisElement {
             else if (weapon instanceof Chainsaw)
             {
                 weapon.setFactor(1.3);
+                weapon.setX(weapon.getX() - weapon.getWidth() / 4);
+                weapon.setY(weapon.getY() - weapon.getHeight() / 2);
 
                 if (isReverse)
                 {
                     weapon.setX(weapon.getX() - 130);
                 }
             }
+            else if (weapon instanceof Blade)
+            {
+                weapon.setFactor(0.8);
+                weapon.setX(weapon.getX() - weapon.getWidth() / 10);
+                weapon.setY(weapon.getY() - weapon.getHeight() / 2);
 
-            /*canvas.save();
-            canvas.rotate(0, x, y + 10);
-            weapon.draw(canvas);
-            canvas.restore();*/
+                if (isReverse)
+                {
+                    weapon.setX(weapon.getX() - 140);
+                }
+            }
+
             weapon.draw(canvas);
         }
 

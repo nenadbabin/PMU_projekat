@@ -219,6 +219,7 @@ public class BattleActivity extends AppCompatActivity {
                 BattleActivity.this.gameLoop = new GameLoop();
                 BattleActivity.this.gameLoop.setGameView(BattleActivity.this.battleView);
                 BattleActivity.this.battleView.setGameLoop(gameLoop);
+                gameLoop.setRunning(true);
                 gameLoop.start();
             }
         }).start();
@@ -303,9 +304,14 @@ public class BattleActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        gameLoop.interruptThread();
+    protected void onPause() {
+        super.onPause();
+        gameLoop.setRunning(false);
+        try {
+            gameLoop.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private static int getRandomNumber (int min, int max)

@@ -8,6 +8,7 @@ import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.objects.CarElement;
 import com.example.pmu_projekat.objects.ChassisElement;
+import com.example.pmu_projekat.objects.weapon.Blade;
 import com.example.pmu_projekat.objects.weapon.Chainsaw;
 import com.example.pmu_projekat.objects.weapon.Rocket;
 import com.example.pmu_projekat.objects.weapon.Stinger;
@@ -54,11 +55,13 @@ public class ChassisClassic extends ChassisElement {
 
             if (weapon instanceof Stinger || weapon instanceof Chainsaw)
             {
-                weapon.setFactor(1.5);
+                weapon.setFactor(1.3);
+                weapon.setX(weapon.getX() + weapon.getWidth() / 4);
+                weapon.setY(weapon.getY() + weapon.getHeight() / 6);
 
                 if (isReverse)
                 {
-                    weapon.setX(weapon.getX() - 60);
+                    weapon.setX(weapon.getX() - 90);
                 }
             }
             else if (weapon instanceof Rocket)
@@ -70,11 +73,18 @@ public class ChassisClassic extends ChassisElement {
                     weapon.setX(weapon.getX() + 80);
                 }
             }
+            else if (weapon instanceof Blade)
+            {
+                weapon.setFactor(0.8);
+                weapon.setX(weapon.getX() + weapon.getWidth() / 4);
+                weapon.setY(weapon.getY() + weapon.getHeight() / 30);
 
-            /*canvas.save();
-            canvas.rotate(0, x, y + 10);
-            weapon.draw(canvas);
-            canvas.restore();*/
+                if (isReverse)
+                {
+                    weapon.setX(weapon.getX() - 90);
+                }
+            }
+
             weapon.draw(canvas);
         }
 

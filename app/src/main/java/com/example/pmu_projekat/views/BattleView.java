@@ -18,6 +18,7 @@ import com.example.pmu_projekat.game_loop.GameLoop;
 import com.example.pmu_projekat.objects.CarElement;
 import com.example.pmu_projekat.objects.ChassisElement;
 import com.example.pmu_projekat.objects.Missile;
+import com.example.pmu_projekat.objects.weapon.Blade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -279,6 +280,23 @@ public class BattleView extends View {
                         p1MissileList.add(missile);
                     }
                 }
+                else if (carP1.getWeapon().getElementIdentity() == Constants.WPN_BLADE)
+                {
+                    if ((userControl && attack) || !userControl)
+                    {
+                        Blade p1Blade = (Blade) carP1.getWeapon();
+                        p1Blade.setDegree(p1Blade.getDegree() + 3);
+                        if (p1Blade.getDegree() >= 360)
+                        {
+                            p1Blade.setDegree(p1Blade.getDegree() % 360);
+
+                            if (wasCarDamagedByAnother(carP2, carP1))
+                            {
+                                p2Health -= carP1.getWeapon().getPower();
+                            }
+                        }
+                    }
+                }
                 else
                 {
                     if (wasCarDamagedByAnother(carP2, carP1) && ((userControl && attack) || !userControl))
@@ -307,6 +325,20 @@ public class BattleView extends View {
 
                         Missile missile = new Missile(carP2.getWeapon().getX(), carP2.getWeapon().getY() + 25);
                         p2MissileList.add(missile);
+                    }
+                }
+                else if (carP2.getWeapon().getElementIdentity() == Constants.WPN_BLADE)
+                {
+                    Blade p2Blade = (Blade) carP2.getWeapon();
+                    p2Blade.setDegree(p2Blade.getDegree() + 3);
+                    if (p2Blade.getDegree() >= 360)
+                    {
+                        p2Blade.setDegree(p2Blade.getDegree() % 360);
+
+                        if (wasCarDamagedByAnother(carP1, carP2))
+                        {
+                            p1Health -= carP2.getWeapon().getPower();
+                        }
                     }
                 }
                 else
@@ -396,14 +428,14 @@ public class BattleView extends View {
 
             if (p1Health == 0)
             {
-                gameLoop.stopLoop();
+                gameLoop.setRunning(false);
                 battleActivity.toast("Opponent won the battle!");
                 battleActivity.p2Win();
             }
 
             if (p2Health == 0)
             {
-                gameLoop.stopLoop();
+                gameLoop.setRunning(false);
                 battleActivity.toast("User won the battle!");
                 battleActivity.p1Win();
             }
@@ -570,11 +602,11 @@ public class BattleView extends View {
 
         carElemList2.add(chassisRect2);
 
-        if (car.getWeapon() != null)
+        /*if (car.getWeapon() != null)
         {
             Rect weaponRect1 = new Rect(car.getWeapon().getX(), car.getWeapon().getY(), car.getWeapon().getX() + car.getWeapon().getWidth(), car.getWeapon().getY() + car.getWeapon().getHeight());
             carElemList2.add(weaponRect1);
-        }
+        }*/
 
         if (car.getWheelLeft() != null)
         {
