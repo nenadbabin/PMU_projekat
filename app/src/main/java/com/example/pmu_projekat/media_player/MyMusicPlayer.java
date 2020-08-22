@@ -47,10 +47,11 @@ public class MyMusicPlayer extends Service {
         isRepeat = 2;
 
         songList = new ArrayList<>();
-        songList.add(R.raw.wotwpotp);
-        songList.add(R.raw.winaf);
-
-
+        songList.add(R.raw.centuries);
+        songList.add(R.raw.punch_drunk_love);
+        songList.add(R.raw.seven_nation_army);
+        songList.add(R.raw.song_2);
+        songList.add(R.raw.we_will_rock_you);
     }
 
     @Override

@@ -165,7 +165,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                 List<Chassis> allChassis = appDatabase.carElementsDao().getAllChassis();
                 for (int i = 0; i < allChassis.size(); i++)
                 {
-                    ChassisElement chassis = CarEditActivity.createChassis(null, allChassis.get(i));
+                    ChassisElement chassis = CarEditActivity.createChassis(GarageActivity.this, allChassis.get(i));
                     chassis.setDatabaseID(allChassis.get(i).getId());
                     carElementList.add(chassis);
                 }
@@ -173,7 +173,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                 List<Weapon> allWeapons = appDatabase.carElementsDao().getAllWeapons();
                 for (int i = 0; i < allWeapons.size(); i++)
                 {
-                    CarElement weapon = CarEditActivity.createWeapon(null, allWeapons.get(i));
+                    CarElement weapon = CarEditActivity.createWeapon(GarageActivity.this, allWeapons.get(i));
                     weapon.setDatabaseID(allWeapons.get(i).getId());
                     carElementList.add(weapon);
                 }
@@ -181,7 +181,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                 List<Wheel> allWheels = appDatabase.carElementsDao().getAllWheels();
                 for (int i = 0; i < allWheels.size(); i++)
                 {
-                    CarElement wheel = CarEditActivity.createWheel(null, allWheels.get(i));
+                    CarElement wheel = CarEditActivity.createWheel(GarageActivity.this, allWheels.get(i));
                     wheel.setDatabaseID(allWheels.get(i).getId());
                     carElementList.add(wheel);
                 }
@@ -279,6 +279,13 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         }
 
         Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "GA : onPause() " + MyMusicPlayer.getTokens());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyMusicPlayer.setTokens(0);
+        Log.d(Constants.MAIN_ACTIVITY_DEBUG_TAG, "GA : onDestroy() " + MyMusicPlayer.getTokens());
     }
 
     @Override
@@ -417,7 +424,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     @Override
                     public void run() {
                         try {
-                            while (true)
+                            while (!chestThread.isInterrupted())
                             {
                                 Thread.sleep(1000);
                                 for (int i = 0; i < chestList.size(); i++) {

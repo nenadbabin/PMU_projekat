@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,7 +36,6 @@ import com.example.pmu_projekat.views.BattleView;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 public class BattleActivity extends AppCompatActivity {
 
@@ -158,31 +158,31 @@ public class BattleActivity extends AppCompatActivity {
 
                 List<Weapon> allWeapons = BattleActivity.this.appDatabase.carElementsDao().getAllWeapons();
                 Collections.shuffle(allWeapons);
-                randomNumber = getRandomNumber(-1, allWeapons.size());
+                randomNumber = getRandomNumber(0, allWeapons.size() + 1);
 
-                if (randomNumber != -1)
+                if (randomNumber != 0)
                 {
-                    CarElement weaponOpponent = CarEditActivity.createWeapon(BattleActivity.this.battleView.getContext(), allWeapons.get(randomNumber));
+                    CarElement weaponOpponent = CarEditActivity.createWeapon(BattleActivity.this.battleView.getContext(), allWeapons.get(randomNumber - 1));
                     weaponOpponent.setReverse(true);
-                    weaponOpponent.setPower(allWeapons.get(randomNumber).getPower());
-                    weaponOpponent.setEnergy(allWeapons.get(randomNumber).getEnergy());
-                    weaponOpponent.setHealth(allWeapons.get(randomNumber).getHealth());
+                    weaponOpponent.setPower(allWeapons.get(randomNumber - 1).getPower());
+                    weaponOpponent.setEnergy(allWeapons.get(randomNumber - 1).getEnergy());
+                    weaponOpponent.setHealth(allWeapons.get(randomNumber - 1).getHealth());
                     chassisOpponent.setWeapon(weaponOpponent);
                 }
 
                 List<Wheel> allWheels = BattleActivity.this.appDatabase.carElementsDao().getAllWheels();
                 Collections.shuffle(allWheels);
-                randomNumber = getRandomNumber(-1, allWheels.size());
+                randomNumber = getRandomNumber(0, allWheels.size() + 1);
 
-                if (randomNumber != -1)
+                if (randomNumber != 0)
                 {
-                    CarElement wheelLeftOpponent = CarEditActivity.createWheel(BattleActivity.this.battleView.getContext(), allWheels.get(randomNumber));
+                    CarElement wheelLeftOpponent = CarEditActivity.createWheel(BattleActivity.this.battleView.getContext(), allWheels.get(randomNumber - 1));
                     wheelLeftOpponent.setReverse(true);
-                    wheelLeftOpponent.setHealth(allWheels.get(randomNumber).getHealth());
+                    wheelLeftOpponent.setHealth(allWheels.get(randomNumber - 1).getHealth());
                     chassisOpponent.setWheelLeft(wheelLeftOpponent);
-                    CarElement wheelRightOpponent = CarEditActivity.createWheel(BattleActivity.this.battleView.getContext(), allWheels.get(randomNumber));
+                    CarElement wheelRightOpponent = CarEditActivity.createWheel(BattleActivity.this.battleView.getContext(), allWheels.get(randomNumber - 1));
                     wheelRightOpponent.setReverse(true);
-                    wheelRightOpponent.setHealth(allWheels.get(randomNumber).getHealth());
+                    wheelRightOpponent.setHealth(allWheels.get(randomNumber - 1).getHealth());
                     chassisOpponent.setWheelRight(wheelRightOpponent);
                 }
 
@@ -219,6 +219,7 @@ public class BattleActivity extends AppCompatActivity {
                 BattleActivity.this.gameLoop = new GameLoop();
                 BattleActivity.this.gameLoop.setGameView(BattleActivity.this.battleView);
                 BattleActivity.this.battleView.setGameLoop(gameLoop);
+                BattleActivity.this.gameLoop.setPriority(Thread.MIN_PRIORITY);
                 gameLoop.setRunning(true);
                 gameLoop.start();
             }
@@ -227,20 +228,24 @@ public class BattleActivity extends AppCompatActivity {
 
     public void setP1Health(final int health)
     {
+        Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "p1Health request");
         BattleActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 p1HealthTV.setText("" + health);
+                Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "p1Health response");
             }
         });
     }
 
     public void setP2Health(final int health)
     {
+        Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "p2Health request");
         BattleActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 p2HealthTV.setText("" + health);
+                Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "p2Health response");
             }
         });
     }
@@ -304,10 +309,10 @@ public class BattleActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        gameLoop.setRunning(false);
+    protected void onStop() {
+        super.onStop();
         try {
+            gameLoop.interrupt();
             gameLoop.join();
         } catch (InterruptedException e) {
             e.printStackTrace();

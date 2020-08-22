@@ -14,22 +14,14 @@ public class Chainsaw extends CarElement {
         super(context, x, y);
         this.width = 144;
         this.height = 56;
+
+        this.d = context.getResources().getDrawable(R.drawable.chainsaw, null);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (!isReverse)
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.chainsaw, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
-        else
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.chainsaw_reverse, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
+        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+        d.draw(canvas);
     }
 
     @Override
@@ -40,5 +32,11 @@ public class Chainsaw extends CarElement {
     @Override
     public int getElementIdentity() {
         return Constants.WPN_CHAINSAW;
+    }
+
+    @Override
+    public void setReverse(boolean reverse) {
+        super.setReverse(reverse);
+        d = context.getResources().getDrawable(R.drawable.chainsaw_reverse, null);
     }
 }

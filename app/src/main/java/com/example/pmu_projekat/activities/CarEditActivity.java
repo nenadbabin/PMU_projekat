@@ -330,6 +330,17 @@ public class CarEditActivity extends AppCompatActivity {
                         weaponElement.setPower(weapon.getPower());
                         weaponElement.setHealth(weapon.getHealth());
                         weaponElement.setEnergy(weapon.getEnergy());
+
+                        if (weaponElement.getElementIdentity() == Constants.WPN_BLADE)
+                        {
+                            weaponElement.setFactor(0.8);
+                        }
+
+                        if (weaponElement.getElementIdentity() == Constants.WPN_ROCKET)
+                        {
+                            weaponElement.setFactor(0.8);
+                        }
+
                         availableComponents.add(weaponElement);
                     }
 

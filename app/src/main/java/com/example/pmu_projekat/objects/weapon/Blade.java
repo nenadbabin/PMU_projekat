@@ -16,6 +16,8 @@ public class Blade extends CarElement {
         super(context, x, y);
         this.width = 220;
         this.height = 115;
+
+        this.d = context.getResources().getDrawable(R.drawable.blade, null);
     }
 
     @Override
@@ -45,18 +47,8 @@ public class Blade extends CarElement {
 
         }
 
-        if (!isReverse)
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.blade, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
-        else
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.blade_reverse, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
+        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+        d.draw(canvas);
 
         if (degree != 0)
         {
@@ -83,5 +75,11 @@ public class Blade extends CarElement {
 
     public void setDegree(int degree) {
         this.degree = degree;
+    }
+
+    @Override
+    public void setReverse(boolean reverse) {
+        super.setReverse(reverse);
+        d = context.getResources().getDrawable(R.drawable.blade_reverse, null);
     }
 }

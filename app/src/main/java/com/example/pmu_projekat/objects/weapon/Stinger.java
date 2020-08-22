@@ -14,22 +14,14 @@ public class Stinger extends CarElement {
         super(context, x, y);
         this.width = 150;
         this.height = 39;
+
+        this.d = context.getResources().getDrawable(R.drawable.stinger, null);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (!isReverse)
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.stinger, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
-        else
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.stinger_reverse, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
+        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+        d.draw(canvas);
     }
 
     @Override
@@ -40,5 +32,11 @@ public class Stinger extends CarElement {
     @Override
     public int getElementIdentity() {
         return Constants.WPN_STINGER;
+    }
+
+    @Override
+    public void setReverse(boolean reverse) {
+        super.setReverse(reverse);
+        d = context.getResources().getDrawable(R.drawable.stinger_reverse, null);
     }
 }

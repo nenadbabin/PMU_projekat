@@ -3,10 +3,13 @@ package com.example.pmu_projekat.objects;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 
 import java.util.Stack;
 
 public abstract class CarElement {
+
+    protected Drawable d;
 
     protected Context context;
     protected int x;

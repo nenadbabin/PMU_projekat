@@ -29,22 +29,15 @@ public class ChassisWhale extends ChassisElement {
         this.leftWheelCenterYReverse = 66;
         this.rightWheelCenterXReverse = 111;
         this.rightWheelCenterYReverse = 66;
+
+        this.d = context.getResources().getDrawable(R.drawable.c_whale, null);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (!isReverse)
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.c_whale, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
-        else
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.c_whale_reverse, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
+
+        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+        d.draw(canvas);
 
         if (weapon != null)
         {
@@ -110,5 +103,11 @@ public class ChassisWhale extends ChassisElement {
     @Override
     public int getElementIdentity() {
         return Constants.C_WHALE;
+    }
+
+    @Override
+    public void setReverse(boolean reverse) {
+        super.setReverse(reverse);
+        d = context.getResources().getDrawable(R.drawable.c_whale_reverse, null);
     }
 }

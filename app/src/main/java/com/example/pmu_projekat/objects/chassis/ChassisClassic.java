@@ -31,22 +31,15 @@ public class ChassisClassic extends ChassisElement {
         this.leftWheelCenterYReverse = 80;
         this.rightWheelCenterXReverse = 93;
         this.rightWheelCenterYReverse = 80;
+
+        this.d = context.getResources().getDrawable(R.drawable.c_classic, null);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (!isReverse)
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.c_classic, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
-        else
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.c_classic_reverse, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
+
+        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+        d.draw(canvas);
 
         if (weapon != null)
         {
@@ -101,5 +94,11 @@ public class ChassisClassic extends ChassisElement {
     @Override
     public int getElementIdentity() {
         return Constants.C_CLASSIC;
+    }
+
+    @Override
+    public void setReverse(boolean reverse) {
+        super.setReverse(reverse);
+        d = context.getResources().getDrawable(R.drawable.c_classic_reverse, null);
     }
 }

@@ -141,6 +141,8 @@ public class BattleView extends View {
         {
             setY();
         }
+
+        Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "onDraw()");
     }
 
     public ChassisElement getCarP1() {
@@ -167,6 +169,7 @@ public class BattleView extends View {
     {
         if (isYCalculated)
         {
+            Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "update()");
             if (wallCounter < GameLoop.MAX_FPS * WALL_START_TIME_SEC)
             {
                 wallCounter++;

@@ -30,23 +30,15 @@ public class ChassisBoulder extends ChassisElement {
         this.leftWheelCenterYReverse = 98;
         this.rightWheelCenterXReverse = 84;
         this.rightWheelCenterYReverse = 98;
+
+        this.d = context.getResources().getDrawable(R.drawable.c_boulder, null);
     }
 
     @Override
     public void draw(Canvas canvas) {
 
-        if (!isReverse)
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.c_boulder, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
-        else
-        {
-            Drawable d = context.getResources().getDrawable(R.drawable.c_boulder_reverse, null);
-            d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
-            d.draw(canvas);
-        }
+        d.setBounds(x, y, x + (int)(width * factor), y + (int)(height * factor));
+        d.draw(canvas);
 
         if (weapon != null)
         {
@@ -114,5 +106,11 @@ public class ChassisBoulder extends ChassisElement {
     @Override
     public int getElementIdentity() {
         return Constants.C_BOULDER;
+    }
+
+    @Override
+    public void setReverse(boolean reverse) {
+        super.setReverse(reverse);
+        d = context.getResources().getDrawable(R.drawable.c_boulder_reverse, null);
     }
 }
