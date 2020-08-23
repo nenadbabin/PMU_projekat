@@ -10,7 +10,7 @@ import com.example.pmu_projekat.views.BattleView;
 public class GameLoop extends Thread {
 
     private BattleView battleView;
-    public static final int MAX_FPS = 80;
+    public static final int MAX_FPS = 60;
     private boolean running;
 
     public void setGameView(BattleView gv) {

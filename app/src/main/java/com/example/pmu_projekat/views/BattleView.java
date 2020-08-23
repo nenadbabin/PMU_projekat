@@ -2,6 +2,7 @@ package com.example.pmu_projekat.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -65,7 +66,7 @@ public class BattleView extends View {
     private int contactWithWallTimeP1 = 0;
     private int contactWithWallTimeP2 = 0;
     private static final int WALL_DAMAGE = 40;
-    private static final int WALL_START_TIME_SEC = 15;
+    private static final int WALL_START_TIME_SEC = 10;
 
     private int p1Health, p2Health;
 
@@ -145,18 +146,10 @@ public class BattleView extends View {
         Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "onDraw()");
     }
 
-    public ChassisElement getCarP1() {
-        return carP1;
-    }
-
     public void setCarP1(ChassisElement car) {
         this.carP1 = car;
         carP1.setX((int) (Constants.SCREEN_WIDTH * 0.1));
         carP1.setY(bottomLine - carP1.getHeight());
-    }
-
-    public ChassisElement getCarP2() {
-        return carP2;
     }
 
     public void setCarP2(ChassisElement car) {
@@ -218,7 +211,7 @@ public class BattleView extends View {
                 {
                     if (carP1.getWheelLeft() != null && carP1.getWheelRight() != null) // mora da ima tockove da bi se kretao
                     {
-                        carP1.setX(carP1.getX() + 2);
+                        carP1.setX(carP1.getX() + moveCar(carP1));
                     }
                 }
                 else
@@ -227,19 +220,19 @@ public class BattleView extends View {
                     {
                         if (moveLeft && canMoveP1Left())
                         {
-                            carP1.setX(carP1.getX() - 2);
+                            carP1.setX(carP1.getX() - moveCar(carP1));
                         }
 
                         if (moveRight)
                         {
-                            carP1.setX(carP1.getX() + 2);
+                            carP1.setX(carP1.getX() + moveCar(carP1));
                         }
                     }
                 }
 
                 if (carP2.getWheelLeft() != null && carP2.getWheelRight() != null)
                 {
-                    carP2.setX(carP2.getX() - 2);
+                    carP2.setX(carP2.getX() - moveCar(carP2));
                 }
             }
             else
@@ -248,7 +241,7 @@ public class BattleView extends View {
                 {
                     if (moveLeft && canMoveP1Left())
                     {
-                        carP1.setX(carP1.getX() - 2);
+                        carP1.setX(carP1.getX() - moveCar(carP1));
                     }
                 }
 
@@ -742,5 +735,16 @@ public class BattleView extends View {
 
     public void setGameLoop(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
+    }
+
+    private int moveCar(ChassisElement chassisElement)
+    {
+        switch (chassisElement.getElementIdentity())
+        {
+            case Constants.C_BOULDER : return 2;
+            case Constants.C_CLASSIC : return 3;
+            case Constants.C_WHALE : return 4;
+            default : return 0;
+        }
     }
 }
