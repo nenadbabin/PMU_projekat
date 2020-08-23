@@ -144,7 +144,7 @@ public class CarEditActivity extends AppCompatActivity {
                         CarEditActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(CarEditActivity.this, "Car successfully saved", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CarEditActivity.this, "Car successfully saved!", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -643,7 +643,7 @@ public class CarEditActivity extends AppCompatActivity {
 
             if (carEditView.getCar() == null)
             {
-                Toast.makeText(this, "You need chassis first", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You need chassis first.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -674,7 +674,7 @@ public class CarEditActivity extends AppCompatActivity {
 
             if (carEditView.getCar().getEnergy() < ce.getEnergy())
             {
-                Toast.makeText(this, "Chassis doesn't have enough energy to support this weapon", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Chassis doesn't have enough energy to support this weapon.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -684,7 +684,7 @@ public class CarEditActivity extends AppCompatActivity {
         {
             if (carEditView.getCar() == null)
             {
-                Toast.makeText(this, "You need chassis first", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You need chassis first.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -752,7 +752,7 @@ public class CarEditActivity extends AppCompatActivity {
                 {
                     if (ce.getEnergy() < oldCar.getWeapon().getEnergy())
                     {
-                        Toast.makeText(this, "Chassis doesn't have enough energy to support this weapon", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Chassis doesn't have enough energy to support this weapon.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }

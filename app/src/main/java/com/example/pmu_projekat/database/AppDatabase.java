@@ -79,9 +79,14 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             User userNenad = new User("nenad");
-            userNenad.setNumberOfBattles(3);
-            userNenad.setNumberOfWins(1);
+            userNenad.setNumberOfBattles(10);
+            userNenad.setNumberOfWins(5);
             long userID = userDAO.insert(userNenad);
+
+            User userMilica = new User("milica");
+            userMilica.setNumberOfBattles(10);
+            userMilica.setNumberOfWins(10);
+            long userIDMilica = userDAO.insert(userMilica);
 
             Chest chest = new Chest();
             chest.setIdUser(userID);
@@ -95,13 +100,13 @@ public abstract class AppDatabase extends RoomDatabase {
             chest.setTimeToOpen(milis);
             chestDAO.insert(chest);
 
-            Weapon stinger = new Weapon("stringer", 5, 5, 10);
+            Weapon stinger = new Weapon("stringer", 15, 5, 12);
             long stringerID = carElementsDAO.insert(stinger);
-            Weapon chainsaw = new Weapon("chainsaw", 10, 6, 15);
+            Weapon chainsaw = new Weapon("chainsaw", 22, 6, 15);
             long chainsawID = carElementsDAO.insert(chainsaw);
-            Weapon rocket = new Weapon("rocket", 15, 8, 20);
+            Weapon rocket = new Weapon("rocket", 20, 8, 18);
             long rocketID = carElementsDAO.insert(rocket);
-            Weapon blade = new Weapon("blade", 12, 6, 18);
+            Weapon blade = new Weapon("blade", 18, 6, 20);
             long bladeID = carElementsDAO.insert(blade);
 
             Chassis classic = new Chassis("classic", 80, 6);
@@ -118,22 +123,44 @@ public abstract class AppDatabase extends RoomDatabase {
             Wheel tyre = new Wheel("tyre", 30);
             long tyreID = carElementsDAO.insert(tyre);
 
-            WarehouseChassis wc1 = new WarehouseChassis(userID, classicID, false);
-            warehouseDAO.insert(wc1);
-            WarehouseChassis wc2 = new WarehouseChassis(userID, boulderID, true);
-            warehouseDAO.insert(wc2);
+            {
+                WarehouseChassis wc1 = new WarehouseChassis(userID, classicID, false);
+                warehouseDAO.insert(wc1);
+                WarehouseChassis wc2 = new WarehouseChassis(userID, boulderID, true);
+                warehouseDAO.insert(wc2);
 
-            WarehouseWeapon wwe1 = new WarehouseWeapon(userID, stringerID, false);
-            warehouseDAO.insert(wwe1);
-            WarehouseWeapon wwe2 = new WarehouseWeapon(userID, rocketID, true);
-            warehouseDAO.insert(wwe2);
-            WarehouseWeapon wwe3 = new WarehouseWeapon(userID, bladeID, false);
-            warehouseDAO.insert(wwe3);
+                WarehouseWeapon wwe1 = new WarehouseWeapon(userID, stringerID, false);
+                warehouseDAO.insert(wwe1);
+                WarehouseWeapon wwe2 = new WarehouseWeapon(userID, rocketID, true);
+                warehouseDAO.insert(wwe2);
+                WarehouseWeapon wwe3 = new WarehouseWeapon(userID, bladeID, false);
+                warehouseDAO.insert(wwe3);
 
-            WarehouseWheel wwh1 = new WarehouseWheel(userID, knobID, false);
-            warehouseDAO.insert(wwh1);
-            WarehouseWheel wwh2 = new WarehouseWheel(userID, tyreID, true);
-            warehouseDAO.insert(wwh2);
+                WarehouseWheel wwh1 = new WarehouseWheel(userID, knobID, false);
+                warehouseDAO.insert(wwh1);
+                WarehouseWheel wwh2 = new WarehouseWheel(userID, tyreID, true);
+                warehouseDAO.insert(wwh2);
+            }
+
+            {
+                WarehouseChassis wc1 = new WarehouseChassis(userIDMilica, classicID, false);
+                warehouseDAO.insert(wc1);
+                WarehouseChassis wc2 = new WarehouseChassis(userIDMilica, whaleID, true);
+                warehouseDAO.insert(wc2);
+
+                WarehouseWeapon wwe1 = new WarehouseWeapon(userIDMilica, stringerID, false);
+                warehouseDAO.insert(wwe1);
+                WarehouseWeapon wwe2 = new WarehouseWeapon(userIDMilica, chainsawID, true);
+                warehouseDAO.insert(wwe2);
+                WarehouseWeapon wwe3 = new WarehouseWeapon(userIDMilica, bladeID, true);
+                warehouseDAO.insert(wwe3);
+
+                WarehouseWheel wwh1 = new WarehouseWheel(userIDMilica, knobID, false);
+                warehouseDAO.insert(wwh1);
+                WarehouseWheel wwh2 = new WarehouseWheel(userIDMilica, scooterID, true);
+                warehouseDAO.insert(wwh2);
+            }
+
 
             return null;
         }

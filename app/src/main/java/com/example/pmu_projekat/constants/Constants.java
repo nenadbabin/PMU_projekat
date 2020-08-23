@@ -21,12 +21,11 @@ public class Constants {
     public static final int WPN_ROCKET = 8;
     public static final int WPN_STINGER = 9;
     public static final int WPN_BLADE = 10;
-    public static final int WHL_KNOB = 11;
-    public static final int WHL_SCOOTER = 12;
-    public static final int WHL_TYRE = 13;
+    public static final int WPN_FORKLIFT = 11;
+    public static final int WHL_KNOB = 12;
+    public static final int WHL_SCOOTER = 13;
+    public static final int WHL_TYRE = 14;
 
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
-
-    public static boolean returned = false;
 }

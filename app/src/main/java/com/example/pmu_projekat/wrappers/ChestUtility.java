@@ -1,4 +1,4 @@
-package com.example.pmu_projekat;
+package com.example.pmu_projekat.wrappers;
 
 public class ChestUtility {
 

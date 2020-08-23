@@ -169,6 +169,9 @@ public class BattleView extends View {
     {
         if (isYCalculated)
         {
+            int oldP1Health = p1Health;
+            int oldP2Health = p2Health;
+
             Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "update()");
             if (wallCounter < GameLoop.MAX_FPS * WALL_START_TIME_SEC)
             {
@@ -426,8 +429,15 @@ public class BattleView extends View {
                 p2Health = 0;
             }
 
-            battleActivity.setP1Health(p1Health);
-            battleActivity.setP2Health(p2Health);
+            if (p1Health != oldP1Health)
+            {
+                battleActivity.setP1Health(p1Health);
+            }
+
+            if (p2Health != oldP2Health)
+            {
+                battleActivity.setP2Health(p2Health);
+            }
 
             if (p1Health == 0)
             {

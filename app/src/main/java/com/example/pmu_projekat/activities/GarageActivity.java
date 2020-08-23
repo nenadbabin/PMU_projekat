@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pmu_projekat.ChestUtility;
+import com.example.pmu_projekat.wrappers.ChestUtility;
 import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
 import com.example.pmu_projekat.database.AppDatabase;
@@ -262,6 +262,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
         super.onPause();
 
         chestThread.interrupt();
+        Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "chestThread interrupted");
         /*if (GarageActivity.this.user != null && GarageActivity.this.user.isMusic() == true) {
             Intent intent = new Intent(this, MyMusicPlayer.class);
             stopService(intent);
@@ -424,7 +425,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     @Override
                     public void run() {
                         try {
-                            while (!chestThread.isInterrupted())
+                            while (!GarageActivity.this.chestThread.isInterrupted())
                             {
                                 Thread.sleep(1000);
                                 for (int i = 0; i < chestList.size(); i++) {
@@ -467,6 +468,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                                         });
                                     }
                                 }
+                                Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "chest thread run");
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -536,7 +538,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                         }
                         else
                         {
-                            Toast.makeText(GarageActivity.this, "You have to use chassis at least in order to play", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GarageActivity.this, "You have to use chassis at least in order to play.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -594,15 +596,15 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
 
             switch (chassis.getName()) {
                 case "classic": {
-                    chassisElement = new ChassisClassic(carView.getContext(), 150, 0);
+                    chassisElement = new ChassisClassic(carView.getContext(), 150, 20);
                     break;
                 }
                 case "whale": {
-                    chassisElement = new ChassisWhale(carView.getContext(), 150, 0);
+                    chassisElement = new ChassisWhale(carView.getContext(), 150, 20);
                     break;
                 }
                 case "boulder": {
-                    chassisElement = new ChassisBoulder(carView.getContext(), 150, 0);
+                    chassisElement = new ChassisBoulder(carView.getContext(), 150, 20);
                     break;
                 }
             }
@@ -734,7 +736,7 @@ public class GarageActivity extends AppCompatActivity implements SettingsReturnV
                     }
                 }
 
-                Toast.makeText(GarageActivity.this, "Chassis opened! You got " + getGiftName(ce1) + " and " + getGiftName(finalCe2), Toast.LENGTH_LONG).show();
+                Toast.makeText(GarageActivity.this, "Chassis opened! You got " + getGiftName(ce1) + " and " + getGiftName(finalCe2) + ".", Toast.LENGTH_LONG).show();
             }
         });
     }

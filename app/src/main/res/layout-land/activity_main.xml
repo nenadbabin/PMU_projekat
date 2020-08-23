@@ -46,11 +46,14 @@
         app:layout_constraintTop_toBottomOf="@id/et_username"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tv_error_msg"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:text="Register">
     </Button>
+    <!--
+        inace moze bottom to top tv_error_msg ako je to otkomentarisano
+    -->
 
-    <TextView
+    <!-- <TextView
         android:id="@+id/tv_error_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,6 +62,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textColor="@android:color/holo_red_dark">
-    </TextView>
+    </TextView> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

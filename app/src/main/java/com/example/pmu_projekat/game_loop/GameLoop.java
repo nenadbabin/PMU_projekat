@@ -39,9 +39,4 @@ public class GameLoop extends Thread {
         this.running = running;
         Log.d(Constants.BATTLE_ACTIVITY_DEBUG_TAG, "setRunning(): " + this.running);
     }
-
-    public void interruptThread()
-    {
-        this.interrupt();
-    }
 }

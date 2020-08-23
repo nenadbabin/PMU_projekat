@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pmu_projekat.R;
 import com.example.pmu_projekat.constants.Constants;
@@ -68,11 +69,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String playerName = spinner.getSelectedItem().toString();
-                TextView errorTV = findViewById(R.id.tv_error_msg);
+                //TextView errorTV = findViewById(R.id.tv_error_msg);
 
                 if (playerName.equals("Choose player..."))
                 {
-                    errorTV.setText("Choose a player!");
+                    //errorTV.setText("Choose a player!");
+                    Toast.makeText(MainActivity.this, "Choose a player!", Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final EditText usernameET = findViewById(R.id.et_username);
-                final TextView errorTV = findViewById(R.id.tv_error_msg);
+                //final TextView errorTV = findViewById(R.id.tv_error_msg);
 
                 new Thread(new Runnable() {
                     @Override
@@ -132,11 +134,19 @@ public class MainActivity extends AppCompatActivity {
                             if (ok)
                             {
                                 final String username = usernameET.getText().toString();
-                                errorTV.post(new Runnable() {
+
+                                /*errorTV.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         errorTV.setText("New player successfully added!");
                                         usernameET.setText("");
+                                    }
+                                });*/
+
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "New player successfully added!", Toast.LENGTH_LONG).show();
                                     }
                                 });
 
@@ -153,10 +163,17 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else
                             {
-                                errorTV.post(new Runnable() {
+                                /*errorTV.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         errorTV.setText("Username already exists!");
+                                    }
+                                });*/
+
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "Username already exists!", Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
