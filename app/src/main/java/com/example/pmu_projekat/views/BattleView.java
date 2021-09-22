@@ -66,7 +66,7 @@ public class BattleView extends View {
     private int contactWithWallTimeP1 = 0;
     private int contactWithWallTimeP2 = 0;
     private static final int WALL_DAMAGE = 40;
-    private static final int WALL_START_TIME_SEC = 10;
+    private static final int WALL_START_TIME_SEC = 15;
 
     private int p1Health, p2Health;
 

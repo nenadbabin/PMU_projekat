@@ -1,6 +1,5 @@
 package com.example.pmu_projekat.game_loop;
 
-import android.graphics.Canvas;
 import android.os.SystemClock;
 import android.util.Log;
 
